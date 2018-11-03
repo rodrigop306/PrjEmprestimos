@@ -1,4 +1,4 @@
-package entidade;
+package model;
 
 public class Usuario {
 	

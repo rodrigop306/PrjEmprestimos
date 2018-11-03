@@ -8,8 +8,8 @@ public class Conexao {
 	private static Connection conn;
     private static final String USUARIO = "SYSTEM";
     private static final String SENHA = "110964";
-    private static final String URL = "jdbc:oracle:thin:@localhost:1528:xe";
-    private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
+    private static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
+    private static final String DRIVER = "oracle.jdbc.OracleDriver";
 
     // Conectar ao banco
     public Connection abrir(){

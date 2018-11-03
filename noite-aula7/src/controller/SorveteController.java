@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import dao.GenericDAOException;
 import dao.SorveteDAO;
 import dao.SorveteDAOImpl;
-import entidade.Sorvete;
+import model.Sorvete;
 @WebServlet("/SorveteController")
 public class SorveteController extends HttpServlet {
 	private static final long serialVersionUID = 1L;

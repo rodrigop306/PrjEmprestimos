@@ -1,4 +1,4 @@
-package entidade;
+package model;
 
 public class Categoria {
 
@@ -19,16 +19,6 @@ public class Categoria {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
-	}
-	
-	@Override
-	public String toString() { 
-		StringBuffer s = new StringBuffer();
-		s.append("Id:");
-		s.append(this.getId());
-		s.append("\tTipo:");
-		s.append(this.getTipo());
-		return s.toString();
 	}
 
 }

@@ -1,4 +1,4 @@
-package entidade;
+package model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +9,7 @@ import java.util.List;
 
 import conexao.Conexao;
 
-public class CategoriaDAO {
+public class CategoriaDAOImpl implements CategoriaDAO {
 	
 	private Connection con;
 	

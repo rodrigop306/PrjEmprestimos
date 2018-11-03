@@ -1,4 +1,4 @@
-package entidade;
+package model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,11 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import conexao.Conexao;
 
-public class AmigosDAO {
+public class AmigosDAOImpl implements AmigosDAO{
 	
 	private Connection con;
 	

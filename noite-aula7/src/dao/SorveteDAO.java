@@ -2,7 +2,7 @@ package dao;
 
 import java.util.List;
 
-import entidade.Sorvete;
+import model.Sorvete;
 
 public interface SorveteDAO {
 	public void adicionar(Sorvete s) throws GenericDAOException;
