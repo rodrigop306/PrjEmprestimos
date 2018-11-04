@@ -40,7 +40,7 @@ public class UsuarioDAOImpl implements UsuarioDAO{
 		con = c.abrir();
 		PreparedStatement ps;
 		try {
-			ps = con.prepareStatement("SELECT 1 FROM USUARIO WHERE LOGIN = ? AND SENHA = ?");
+			ps = con.prepareStatement("SELECT LOGIN, SENHA FROM USUARIO WHERE LOGIN = ? AND SENHA = ?");
 			ps.setString(1, login);
 			ps.setString(2, senha);
 			ResultSet rs = ps.executeQuery();
@@ -59,20 +59,16 @@ public class UsuarioDAOImpl implements UsuarioDAO{
 		CallableStatement cs;
 		try {
 			cs = con.prepareCall("{ call sp_verificausuario(?,?)}");
-			// int i=0;
 			cs.setString(1, login);
 			cs.setString(2, senha);
 			cs.execute();
-			// return cs.execute();
 			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		} finally {
 			con = c.fechar();
 		}
-
 	}
 
 }

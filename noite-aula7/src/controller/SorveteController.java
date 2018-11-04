@@ -49,9 +49,6 @@ public class SorveteController extends HttpServlet {
 			} else if ("remover".equals(cmd)) {
 				String id = request.getParameter("txtId");
 				sDao.remover(Long.parseLong(id));
-//				List<Sorvete> lista = sDao.presquisarPorSabor(
-//						request.getParameter("txtSabor"));
-//				session.setAttribute("LISTA", lista);
 				msg = "Sorvete com o Id " + id + " foi removido";
 			}
 		} catch (GenericDAOException | NumberFormatException e) {
@@ -61,14 +58,6 @@ public class SorveteController extends HttpServlet {
 
 		session.setAttribute("MENSAGEM", msg);
 		response.sendRedirect("./sorvete.jsp");
-
-		//		List<Sorvete> lista = (List<Sorvete>) getServletContext().getAttribute("LISTA");
-		//		if (lista == null) { 
-		//			lista = new Vector<Sorvete>();
-		//			getServletContext().setAttribute("LISTA", lista);
-		//		}
-		//		lista.add( s );
-		//		System.out.println( lista.size() );
 	}
 
 }
