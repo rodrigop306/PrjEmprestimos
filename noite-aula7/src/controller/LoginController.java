@@ -32,13 +32,14 @@ public class LoginController extends HttpServlet {
 //		try {
 			if (emprestimosDAO.pesquisaUsuario(user, senha)) {
 				mensagem = "Usuário logado!";
+				response.sendRedirect("./emprestimos.jsp");
 			} else {
 				mensagem = "Usuário ou senha incorreto";
+				response.sendRedirect("./login.jsp");
 			}
 		/**} catch (Throwable e) {
 			mensagem = "Opa, deu erro!";
 		}*/
 		session.setAttribute("MENSAGEM", mensagem);
-		response.sendRedirect("./login.jsp");
 	}
 }
