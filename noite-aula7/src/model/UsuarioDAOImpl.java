@@ -33,34 +33,40 @@ public class UsuarioDAOImpl implements UsuarioDAO{
 		}
 	}
 
-	// Esse método será usado no login,
-	// retornando true ou false caso o login e a senha estejam corretos
-	public boolean pesquisaUsuario(String login, String senha) {
+	public Usuario getUsuario(Usuario usuario) {
 		Conexao c = new Conexao();
 		con = c.abrir();
 		PreparedStatement ps;
+		Usuario user = null;
 		try {
-			ps = con.prepareStatement("SELECT LOGIN, SENHA FROM USUARIO WHERE LOGIN = ? AND SENHA = ?");
-			ps.setString(1, login);
-			ps.setString(2, senha);
+			ps = con.prepareStatement("SELECT IDUSUARIO, LOGIN, NOME FROM USUARIO WHERE LOGIN = ? AND SENHA = ?");
+			ps.setString(1, usuario.getLogin());
+			ps.setString(2, usuario.getSenha());
 			ResultSet rs = ps.executeQuery();
-			return rs.next();
+			if(rs.next()){
+				user = new Usuario();
+				user.setIdUsuario(rs.getInt("IDUSUARIO"));
+				user.setLogin(rs.getString("LOGIN"));
+				user.setNome(rs.getString("NOME"));
+			}
+			con = c.fechar();
+			ps.close();
+			rs.close();
+			return user;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
-		} finally {
-			con = c.fechar();
+			return null;
 		}
 	}
 
-	public boolean logar(String login, String senha) {
+	public boolean logar(Usuario usuario) {
 		Conexao c = new Conexao();
 		con = c.abrir();
 		CallableStatement cs;
 		try {
 			cs = con.prepareCall("{ call sp_verificausuario(?,?)}");
-			cs.setString(1, login);
-			cs.setString(2, senha);
+			cs.setString(1, usuario.getLogin());
+			cs.setString(2, usuario.getSenha());
 			cs.execute();
 			return true;
 		} catch (SQLException e) {

@@ -8,13 +8,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import model.Usuario;
 import model.UsuarioDAOImpl;
 
 @WebServlet("/LoginController")
 public class LoginController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private UsuarioDAOImpl emprestimosDAO;
+	private UsuarioDAOImpl usuarioDAO;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -23,23 +25,24 @@ public class LoginController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		emprestimosDAO = new UsuarioDAOImpl();
+		HttpSession session = request.getSession();
+		session.setAttribute("USUARIO", null);
+		usuarioDAO = new UsuarioDAOImpl();
 		String user = request.getParameter("txtLogin");
 		String senha = request.getParameter("txtPassword");
 		String mensagem = "";
-		System.out.println(user + ", " + senha);
-		HttpSession session = request.getSession();
-//		try {
-			if (emprestimosDAO.pesquisaUsuario(user, senha)) {
-				mensagem = "Usuário logado!";
-				response.sendRedirect("./emprestimos.jsp");
-			} else {
-				mensagem = "Usuário ou senha incorreto";
-				response.sendRedirect("./login.jsp");
-			}
-		/**} catch (Throwable e) {
-			mensagem = "Opa, deu erro!";
-		}*/
+		Usuario usuario = new Usuario();
+		usuario.setLogin(user);
+		usuario.setSenha(senha);
+		if (usuarioDAO.logar(usuario)) {
+			mensagem = "Usuário logado!";
+			usuario = usuarioDAO.getUsuario(usuario);
+			session.setAttribute("USUARIO", usuario);
+			response.sendRedirect("./emprestimos.jsp");
+		} else {
+			mensagem = "Usuário ou senha incorreto";
+			response.sendRedirect("./login.jsp");
+		}
 		session.setAttribute("MENSAGEM", mensagem);
 	}
 }

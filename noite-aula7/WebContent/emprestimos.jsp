@@ -42,7 +42,7 @@
 	<% } %>
 	
 	
-	<form id="formEmprestimo" action="./SorveteController" method="post">
+	<form id="formEmprestimo" action="./EmprestimoController" method="post">
 		<div class="container">
 			<div class="form-group">
     			<label for="txtAcao">Ação</label>

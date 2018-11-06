@@ -46,9 +46,8 @@ public class EmprestimosDAOImpl implements EmprestimosDAO {
 		try {
 			ps = con.prepareStatement(
 					"INSERT INTO EMPRESTIMOS (IDEMPRESTIMOS, IDUSUARIO, NOMEOBJETO, IDAMIGODONO, DATAEMPRESTIMO, "
-							+ "DATADEVOLUCAO, STATUS, DETALHESEMPRESTIMOS) " + "VALUES (?,?,?,?,?,?,?,?)");
+							+ "DATADEVOLUCAO, STATUS, DETALHESEMPRESTIMOS) " + "VALUES (SEQUENCIA_PK_EMPRESTIMOS.nextVal,?,?,?,?,?,?,?)");
 			int i = 0;
-			ps.setInt(++i, emprestimos.getIdEmprestimos());
 			ps.setInt(++i, emprestimos.getIdUsuario());
 			ps.setString(++i, emprestimos.getNomeObjeto());
 			ps.setInt(++i, emprestimos.getIdAmigoDono());
