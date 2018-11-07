@@ -38,7 +38,7 @@
 	<% } %>
 	
 	
-	<form id="formAmigos" action="./SorveteController" method="post">
+	<form id="formAmigos" action="./AmigosController" method="post">
 		<div class="container">
 			<div class="form-group">
     			<label for="txtId">Id</label>

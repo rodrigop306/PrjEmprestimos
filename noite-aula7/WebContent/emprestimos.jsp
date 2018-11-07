@@ -67,10 +67,7 @@
 			<div class="form-group">
     			<label for="txtCategoria">Categoria</label>
     			<select class="form-control" id="txtCategoria" name="txtCategoria">
-      				<option value="massa2k">Massa 2Kg</option>
-      				<option value="massa1k">Massa 1Kg</option>
-      				<option value="massa250">Massa 250g</option>
-				    <option value="picole">Picole</option>
+      				<option value="massa2k"></option>
 				</select>
 			</div>
 			<div class="form-group">

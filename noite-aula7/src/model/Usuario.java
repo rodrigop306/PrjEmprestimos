@@ -3,7 +3,6 @@ package model;
 public class Usuario {
 	
 	private int idUsuario;
-	private int[] idAmigos;
 	private String login;
 	private String senha;
 	private String nome;
@@ -23,14 +22,6 @@ public class Usuario {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public int[] getIdAmigos() {
-		return idAmigos;
-	}
-
-	public void setIdAmigos(int[] idAmigos) {
-		this.idAmigos = idAmigos;
 	}
 
 	public String getLogin() {

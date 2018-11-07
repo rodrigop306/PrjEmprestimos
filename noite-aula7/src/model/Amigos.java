@@ -2,6 +2,7 @@ package model;
 
 public class Amigos {
 
+	private int idUsuario;
 	private int idAmigos;
 	private String nome;
 	private String email;
@@ -37,6 +38,14 @@ public class Amigos {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+	
+	public int getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(int idUsuario) {
+		this.idUsuario = idUsuario;
 	}
 
 }

@@ -38,7 +38,7 @@
 	<% } %>
 	
 	
-	<form id="formUsuario" action="./SorveteController" method="post">
+	<form id="formUsuario" action="./UsuarioController" method="post">
 		<div class="container">
 			<div class="form-group">
     			<label for="txtId">Id</label>
