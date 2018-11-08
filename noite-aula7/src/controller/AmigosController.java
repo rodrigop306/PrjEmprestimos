@@ -44,10 +44,8 @@ public class AmigosController extends HttpServlet {
 			}
 			session.setAttribute("MENSAGEM", mensagem);
 			response.sendRedirect("./amigos.jsp");
-		} else
-
-		{
-			mensagem = "Faça login para registrar o empréstimo.";
+		} else {
+			mensagem = "Faça login para registrar um amigo.";
 			response.sendRedirect("./index.jsp");
 		}
 	}

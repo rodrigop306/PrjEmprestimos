@@ -9,16 +9,6 @@
 	<link rel="stylesheet" href="./css/bootstrap.min.css"/>
 	<script src="./js/bootstrap.min.js"></script>
 	<script src="./js/jquery-3.3.1.min.js"></script>
-	<script>
-		function remover( id ) {
-			if (confirm("Remove o sorvete com id " + id)) {
-				$('#formAmigos').empty();
-				$('#formAmigos').append('<input type="hidden" name="txtId" value="' + id + '"/>');
-				$('#formAmigos').append('<input type="hidden" name="cmd" value="remover"/>');
-				$('#formAmigos').submit();
-			}
-		}
-	</script>
 </head>
 <body>
 	<h2>Amigos</h2>

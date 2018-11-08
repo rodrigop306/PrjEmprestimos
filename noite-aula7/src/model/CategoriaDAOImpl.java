@@ -18,7 +18,7 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 		con = c.abrir();
 		PreparedStatement ps;
 		try {
-			ps = con.prepareStatement("INSERT INTO CATEGORIA (TIPO) VALUE ?");
+			ps = con.prepareStatement("INSERT INTO CATEGORIA (IDCATEGORIA, TIPO) VALUES (SEQUENCIA_PK_CATEGORIA.nextVal, ?)");
 			int i = 0;
 			ps.setString(++i, categoria.getTipo());
 			ps.executeUpdate();
@@ -35,12 +35,13 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 		PreparedStatement ps;
 		List<Categoria> listaCategoria = null;
 		try {
-			ps = con.prepareStatement("SELECT TIPO FROM CATEGORIA WHERE TIPO LIKE ?");
+			ps = con.prepareStatement("SELECT IDCATEGORIA, TIPO FROM CATEGORIA WHERE TIPO LIKE ?");
 			ps.setString(1, tipo);
 			ResultSet rs = ps.executeQuery();
 			listaCategoria = new ArrayList<>();
 			while(rs.next()) {
 				Categoria categoria = new Categoria();
+				categoria.setId(rs.getInt("IDCATEGORIA"));
 				categoria.setTipo(rs.getString("TIPO"));
 				listaCategoria.add(categoria);
 			}
