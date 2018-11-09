@@ -34,20 +34,14 @@ public class EmprestimoController extends HttpServlet {
 		Usuario usuario = (Usuario) session.getAttribute("USUARIO");
 		if(usuario != null){
 			try {
-				if(acao.equals("pegarEmprestado")){
+				if(acao.equals("pegarEmprestado") || acao.equals("Emprestar")){
 					emprestimo.setIdUsuario(usuario.getIdUsuario()); 
 					emprestimo.setNomeObjeto(request.getParameter("txtNomeObjeto"));
-					emprestimo.setIdAmigoDono(1); // Teste
-					emprestimo.setDataEmprestimo(request.getParameter("txtDataEmprestimo"));
-					emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
-					emprestimo.setStatus(request.getParameter("txtStatus"));
-					emprestimo.setDetalhesEmprestimo("txtDetalhes");
-					emprestimoController.adicionaEmprestimosRecebidos(emprestimo);
-					mensagem = "Empréstimo adicionado com sucesso.";
-				} else if(acao.equals("Emprestar")){
-					emprestimo.setIdUsuario(usuario.getIdUsuario()); 
-					emprestimo.setNomeObjeto(request.getParameter("txtNomeObjeto"));
-					emprestimo.setIdAmigoEmprestimo(1); // Teste
+					if(acao.equals("pegarEmprestado")){
+						emprestimo.setIdAmigoDono(1); // Teste
+					} else if(acao.equals("Emprestar")){
+						emprestimo.setIdAmigoEmprestimo(1); // Teste
+					}
 					emprestimo.setDataEmprestimo(request.getParameter("txtDataEmprestimo"));
 					emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
 					emprestimo.setStatus(request.getParameter("txtStatus"));

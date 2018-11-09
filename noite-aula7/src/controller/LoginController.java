@@ -34,13 +34,18 @@ public class LoginController extends HttpServlet {
 		Usuario usuario = new Usuario();
 		usuario.setLogin(user);
 		usuario.setSenha(senha);
-		if (usuarioDAO.logar(usuario)) {
-			mensagem = "Usuário logado!";
-			usuario = usuarioDAO.getUsuario(usuario);
-			session.setAttribute("USUARIO", usuario);
-			response.sendRedirect("./emprestimos.jsp");
-		} else {
-			mensagem = "Usuário ou senha incorreto";
+		try {
+			if (usuarioDAO.logar(usuario)) {
+				mensagem = "Usuário logado!";
+				usuario = usuarioDAO.getUsuario(usuario);
+				session.setAttribute("USUARIO", usuario);
+				response.sendRedirect("./emprestimos.jsp");
+			} else {
+				mensagem = "Usuário ou senha incorreto";
+				response.sendRedirect("./login.jsp");
+			}
+		} catch(Throwable e){
+			mensagem = "Não foi possível logar.";
 			response.sendRedirect("./login.jsp");
 		}
 		session.setAttribute("MENSAGEM", mensagem);

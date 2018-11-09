@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import model.Categoria;
 import model.CategoriaDAOImpl;
+import model.Usuario;
 
 @WebServlet("/CategoriaController")
 public class CategoriaController extends HttpServlet {
@@ -23,22 +24,32 @@ public class CategoriaController extends HttpServlet {
 			throws ServletException, IOException {
 		doPost(request, response);
 	}
-	
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String acao = request.getParameter("cmd");
 		String mensagem = "";
 		HttpSession session = request.getSession();
 		categoriaDAO = new CategoriaDAOImpl();
-		if(acao.equals("adicionar")){
-			Categoria c = new Categoria();
-			c.setTipo(request.getParameter("txtTipo"));
-			categoriaDAO.adicionaCategoria(c);
-			mensagem = "Categoria adicionada com sucesso";
-		} else if(acao.equals("pesquisar")){
-			List<Categoria> lista = categoriaDAO.pesquisaCategoria(request.getParameter("txtTipo"));
-			session.setAttribute("LISTA", lista);
-			mensagem = "A busca retornou "+lista.size()+" resultados.";
+		Usuario u = (Usuario) session.getAttribute("USUARIO");
+		if(u != null){
+			try {
+			if(acao.equals("adicionar")){
+				Categoria c = new Categoria();
+				c.setTipo(request.getParameter("txtTipo"));
+				categoriaDAO.adicionaCategoria(c);
+				mensagem = "Categoria adicionada com sucesso";
+			} else if(acao.equals("pesquisar")){
+				List<Categoria> lista = categoriaDAO.pesquisaCategoria(request.getParameter("txtTipo"));
+				session.setAttribute("LISTA", lista);
+				mensagem = "A busca retornou "+lista.size()+" resultados.";
+			}
+			} catch(Throwable e){
+				mensagem = "Não foi possível realizar a ação.";
+			}
+		} else {
+			mensagem = "Faça o login para adicionar categorias.";
+			response.sendRedirect("./index.jsp");
 		}
 		session.setAttribute("MENSAGEM", mensagem);
 		response.sendRedirect("./categoria.jsp");

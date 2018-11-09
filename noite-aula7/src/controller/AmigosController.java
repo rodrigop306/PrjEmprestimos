@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,21 +27,34 @@ public class AmigosController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String mensagem = "";
+		String acao = request.getParameter("cmd");
 		Amigos amigos = new Amigos();
 		amigosController = new AmigosDAOImpl();
 		HttpSession session = request.getSession();
 		Usuario usuario = (Usuario) session.getAttribute("USUARIO");
 		if (usuario != null) {
-			try {
-
-				amigos.setIdUsuario(usuario.getIdUsuario());
-				amigos.setNome(request.getParameter("txtNome"));
-				amigos.setEmail(request.getParameter("txtEmail"));				
-				amigos.setTelefone(request.getParameter("txtDataDevolucao"));
-				amigosController.adicionaAmigo(amigos);
-				mensagem = "Amigo adicionado com sucesso.";
-			} catch (Throwable e) {
-				mensagem = "Não foi possível adicionar o amigos.";
+			if(acao.equals("adicionar")){
+				try {
+					amigos.setIdUsuario(usuario.getIdUsuario());
+					amigos.setNome(request.getParameter("txtNome"));
+					amigos.setEmail(request.getParameter("txtEmail"));				
+					amigos.setTelefone(request.getParameter("txtDataDevolucao"));
+					amigosController.adicionaAmigo(amigos);
+					mensagem = "Amigo adicionado com sucesso.";
+				} catch (Throwable e) {
+					mensagem = "Não foi possível adicionar o amigos.";
+				}
+			} else if(acao.equals("pesquisar")) {
+				String nomeAmigo = request.getParameter("txtNome");
+				if(!nomeAmigo.trim().equals("")){
+					List<Amigos> lista = amigosController.pesquisarAmigo(request.getParameter("txtNome"));
+					mensagem = "Foram encontrados "+lista.size()+" amigos.";
+					session.setAttribute("LISTA", lista);
+				} else {
+					mensagem = "Digite um nome para realizar a pesquisa.";
+				}
+			} else if(acao.equals("remover")){
+				// TODO
 			}
 			session.setAttribute("MENSAGEM", mensagem);
 			response.sendRedirect("./amigos.jsp");

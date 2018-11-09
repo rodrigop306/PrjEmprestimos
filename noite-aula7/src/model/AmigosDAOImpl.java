@@ -63,20 +63,22 @@ public class AmigosDAOImpl implements AmigosDAO{
 		con = c.abrir();
 		PreparedStatement ps;
 		try {
-			ps = con.prepareStatement("DELETE FROM AMIGOS WHERE NOME = ?");
-			ps.setString(1, nome);
-			ps.execute();
-			ps.close();
+			Amigos a = getAmigo(nome);
+			if(a == null){
+				return false;
+			} else {
+				ps = con.prepareStatement("DELETE FROM AMIGOS WHERE IDAMIGO = '"+a.getIdAmigo()+"'");
+				ps.execute();
+				ps.close();
+				return true;
+			}
 		} catch(SQLException e){
 			e.printStackTrace();
-			return false;
 		}
 		con = c.fechar();
-		return true;
+		return false;
 	}
 
-	// Será usado para pegar o ID do amigo para realizar o empréstimo
-	// Essa query está em Oracle, ver com o prof. Joilson como será realizado a query
 	public Amigos getAmigo(String nome){
 		Conexao c = new Conexao();
 		con = c.abrir();
@@ -86,7 +88,6 @@ public class AmigosDAOImpl implements AmigosDAO{
 			String sql = "SELECT IDAMIGO, IDUSUARIO, NOME, EMAIL, TELEFONE FROM AMIGOS WHERE NOME = '"+nome+"' ";
 			ResultSet rs = ps.executeQuery(sql);
 			if(rs.next()){
-				System.out.println("Passei por aqui.");
 				a = new Amigos();
 				a.setIdAmigo(rs.getInt("IDAMIGO"));
 				a.setNome(rs.getString("NOME"));
@@ -99,6 +100,5 @@ public class AmigosDAOImpl implements AmigosDAO{
 		}
 		return a;
 	}
-
 
 }

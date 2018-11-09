@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import conexao.Conexao;
 
@@ -75,6 +76,23 @@ public class UsuarioDAOImpl implements UsuarioDAO{
 		} finally {
 			con = c.fechar();
 		}
+	}
+
+	@Override
+	public boolean existeUsuario(String login) {
+		Conexao c = new Conexao();
+		con = c.abrir();
+		try {
+			Statement ps = con.createStatement();
+			String sql = "SELECT * FROM USUARIO WHERE LOGIN = '"+login+"' ";
+			ResultSet rs = ps.executeQuery(sql);
+			if(rs.next()){
+				return true;
+			}
+		} catch (SQLException e){
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }
