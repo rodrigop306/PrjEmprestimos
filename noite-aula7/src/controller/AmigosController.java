@@ -38,7 +38,7 @@ public class AmigosController extends HttpServlet {
 					amigos.setIdUsuario(usuario.getIdUsuario());
 					amigos.setNome(request.getParameter("txtNome"));
 					amigos.setEmail(request.getParameter("txtEmail"));				
-					amigos.setTelefone(request.getParameter("txtDataDevolucao"));
+					amigos.setTelefone(request.getParameter("txtTelefone"));
 					amigosController.adicionaAmigo(amigos);
 					mensagem = "Amigo adicionado com sucesso.";
 				} catch (Throwable e) {

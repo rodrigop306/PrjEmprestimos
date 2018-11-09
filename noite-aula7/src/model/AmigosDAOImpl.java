@@ -101,4 +101,30 @@ public class AmigosDAOImpl implements AmigosDAO{
 		return a;
 	}
 
+	@Override
+	public List<Amigos> listarAmigo() {
+		Conexao c = new Conexao();
+		con = c.abrir();
+		List<Amigos> lista = null;
+		try {
+			Statement ps = con.createStatement();
+			String sql = "SELECT A.IDAMIGO, A.IDUSUARIO, A.NOME, A.EMAIL, A.TELEFONE FROM AMIGOS A INNER JOIN USUARIO U ON U.IDUSUARIO";
+			ResultSet rs = ps.executeQuery(sql);
+			lista = new ArrayList<>();
+			while(rs.next()){
+				Amigos a = new Amigos();
+				a.setIdAmigo(rs.getInt("IDUSUARIO"));
+				a.setIdUsuario(rs.getInt("IDUSUARIO"));
+				a.setNome(rs.getString("NOME"));
+				a.setEmail(rs.getString("EMAIL"));
+				a.setTelefone(rs.getString("TELEFONE"));
+				lista.add(a);
+			}
+			return lista;
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
 }
