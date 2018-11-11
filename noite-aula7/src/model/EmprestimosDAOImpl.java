@@ -20,9 +20,8 @@ public class EmprestimosDAOImpl implements EmprestimosDAO {
 		try {
 			ps = con.prepareStatement(
 					"INSERT INTO EMPRESTIMOS (IDEMPRESTIMOS, IDUSUARIO, NOMEOBJETO, IDAMIGOEMPRESTIMO, DATAEMPRESTIMO, "
-							+ "DATADEVOLUCAO, STATUS, DETALHESEMPRESTIMOS) " + "VALUES (?,?,?,?,?,?,?,?)");
+							+ "DATADEVOLUCAO, STATUS, DETALHESEMPRESTIMOS) " + "VALUES (SEQUENCIA_PK_EMPRESTIMOS.nextVal,?,?,?,?,?,?,?)");
 			int i = 0;
-			ps.setInt(++i, emprestimos.getIdEmprestimos());
 			ps.setInt(++i, emprestimos.getIdUsuario());
 			ps.setString(++i, emprestimos.getNomeObjeto());
 			ps.setInt(++i, emprestimos.getIdAmigoEmprestimo());
@@ -59,11 +58,10 @@ public class EmprestimosDAOImpl implements EmprestimosDAO {
 			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			con = c.fechar();
 		}
+		con = c.fechar();
 	}
-	
+
 	public List<Emprestimos> pesquisaEmprestimos(String dataDe, String dataAte) {
 		Conexao c = new Conexao();
 		con = c.abrir();
@@ -95,10 +93,29 @@ public class EmprestimosDAOImpl implements EmprestimosDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
-		} finally {
-			con = c.fechar();
 		}
+		con = c.fechar();
 		return listaEmprestimos;
+	}
+
+	@Override
+	public void atualizaEmprestimo(Emprestimos emprestimos) {
+		Conexao c = new Conexao();
+		con = c.abrir();
+		PreparedStatement ps;
+		try {
+			ps = con.prepareStatement("UPDATE EMPRESTIMOS SET NOMEOBJETO = '"+emprestimos.getNomeObjeto()+"', "
+					+ "DATAEMPRESTIMO = '"+emprestimos.getDataEmprestimo()+"', "
+					+ "DATADEVOLUCAO = '"+emprestimos.getDataDevolucao()+"', "
+					+ "STATUS = '"+emprestimos.getStatus()+"', "
+					+ "DETALHESEMPRESTIMOS = '"+emprestimos.getDetalhesEmprestimo()+"' "
+					+ "WHERE IDEMPRESTIMOS = "+emprestimos.getIdEmprestimos()+" AND IDUSUARIO = "+emprestimos.getIdUsuario()+"");
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		con = c.fechar();
 	}
 
 }

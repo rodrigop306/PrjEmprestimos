@@ -41,25 +41,33 @@ public class AmigosController extends HttpServlet {
 					amigos.setTelefone(request.getParameter("txtTelefone"));
 					amigosController.adicionaAmigo(amigos);
 					mensagem = "Amigo adicionado com sucesso.";
+					System.out.println("Passei por aqui!");
 				} catch (Throwable e) {
 					mensagem = "Não foi possível adicionar o amigos.";
 				}
-			} else if(acao.equals("pesquisar")) {
+			}
+			if(acao.equals("pesquisar")) {
 				String nomeAmigo = request.getParameter("txtNome");
 				if(!nomeAmigo.trim().equals("")){
-					List<Amigos> lista = amigosController.pesquisarAmigo(request.getParameter("txtNome"));
-					mensagem = "Foram encontrados "+lista.size()+" amigos.";
+					List<Amigos> lista = amigosController.pesquisarAmigo(nomeAmigo, usuario.getIdUsuario());
+					if(lista != null){
+						mensagem = "Foram encontrados "+lista.size()+" amigos.";
+					} else {
+						mensagem = "A busca não retornou resultados.";
+					}
 					session.setAttribute("LISTA", lista);
 				} else {
 					mensagem = "Digite um nome para realizar a pesquisa.";
 				}
-			} else if(acao.equals("remover")){
+			}
+			if(acao.equals("remover")){
 				// TODO
 			}
 			session.setAttribute("MENSAGEM", mensagem);
 			response.sendRedirect("./amigos.jsp");
 		} else {
-			mensagem = "Faça login para registrar um amigo.";
+			mensagem = "Faça login para pesquisar ou registrar um amigo.";
+			session.setAttribute("MENSAGEM", mensagem);
 			response.sendRedirect("./index.jsp");
 		}
 	}

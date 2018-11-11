@@ -13,37 +13,38 @@ import conexao.Conexao;
 public class AmigosDAOImpl implements AmigosDAO{
 
 	private Connection con;
-
+	
 	public void adicionaAmigo(Amigos amigos) {
 		Conexao c = new Conexao();
 		con = c.abrir();
 		PreparedStatement ps;
 		try {
-			ps = con.prepareStatement("INSERT INTO AMIGOS (NOME, EMAIL, TELEFONE) VALUES (?,?,?)");
+			ps = con.prepareStatement("INSERT INTO AMIGOS (IDAMIGO, IDUSUARIO, NOME, EMAIL, TELEFONE) VALUES (SEQUENCIA_PK_AMIGOS.nextVal,?,?,?,?)");
 			int i = 0;
+			ps.setInt(++i, amigos.getIdUsuario());
 			ps.setString(++i, amigos.getNome());
 			ps.setString(++i, amigos.getEmail());
 			ps.setString(++i, amigos.getTelefone());
 			ps.executeUpdate();
-			ps.close();
-			con = c.fechar();
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
+		con = c.fechar();
 	}
 
-	public List<Amigos> pesquisarAmigo(String nome) {
+	public List<Amigos> pesquisarAmigo(String nome, int idUsuario) {
 		Conexao c = new Conexao();
 		con = c.abrir();
 		PreparedStatement ps;
-		List<Amigos> listaAmigos = null;
+		List<Amigos> listaAmigos = new ArrayList<>();
 		try {
-			ps = con.prepareStatement("SELECT A.NOME, A.EMAIL, A.TELEFONE FROM AMIGOS A INNER JOIN USUARIO U ON U.IDUSUARIO = A.IDAMIGOS WHERE NOME LIKE ?");
-			ps.setString(1, nome);
+			ps = con.prepareStatement("SELECT A.IDAMIGO, A.IDUSUARIO, A.NOME, A.EMAIL, A.TELEFONE FROM AMIGOS A INNER JOIN USUARIO U ON U.IDUSUARIO = A.IDUSUARIO WHERE A.NOME LIKE '%"+nome+"%' AND A.IDUSUARIO = ? ");
+			ps.setInt(1, idUsuario);
 			ResultSet rs = ps.executeQuery();
-			listaAmigos = new ArrayList<>();
 			while(rs.next()) {
 				Amigos a = new Amigos();
+				a.setIdAmigo(rs.getInt("IDAMIGO"));
+				a.setIdUsuario(rs.getInt("IDUSUARIO"));
 				a.setNome(rs.getString("NOME"));
 				a.setEmail(rs.getString("EMAIL"));
 				a.setTelefone(rs.getString("TELEFONE"));
@@ -51,23 +52,25 @@ public class AmigosDAOImpl implements AmigosDAO{
 			}
 			rs.close();
 			ps.close();
-			con = c.fechar();
+			return listaAmigos;
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
-		return listaAmigos;
+		con = c.fechar();
+		return null;
 	}
 
 	public boolean removeAmigo(String nome) {
 		Conexao c = new Conexao();
-		con = c.abrir();
 		PreparedStatement ps;
 		try {
 			Amigos a = getAmigo(nome);
 			if(a == null){
 				return false;
 			} else {
-				ps = con.prepareStatement("DELETE FROM AMIGOS WHERE IDAMIGO = '"+a.getIdAmigo()+"'");
+				con = c.abrir();
+				ps = con.prepareStatement("DELETE FROM AMIGOS WHERE IDAMIGO = ?");
+				ps.setInt(1, a.getIdAmigo());
 				ps.execute();
 				ps.close();
 				return true;
@@ -93,11 +96,17 @@ public class AmigosDAOImpl implements AmigosDAO{
 				a.setNome(rs.getString("NOME"));
 				a.setEmail(rs.getString("EMAIL"));
 				a.setTelefone(rs.getString("TELEFONE"));
+				con = c.fechar();
+				ps.close();
+				rs.close();
 				return a;
 			}
+			ps.close();
+			rs.close();
 		} catch (SQLException e){
 			e.printStackTrace();
 		}
+		con = c.fechar();
 		return a;
 	}
 
@@ -108,7 +117,7 @@ public class AmigosDAOImpl implements AmigosDAO{
 		List<Amigos> lista = null;
 		try {
 			Statement ps = con.createStatement();
-			String sql = "SELECT A.IDAMIGO, A.IDUSUARIO, A.NOME, A.EMAIL, A.TELEFONE FROM AMIGOS A INNER JOIN USUARIO U ON U.IDUSUARIO";
+			String sql = "SELECT A.IDAMIGO, A.IDUSUARIO, A.NOME, A.EMAIL, A.TELEFONE FROM AMIGOS A INNER JOIN USUARIO U ON U.IDUSUARIO = A.IDUSUARIO";
 			ResultSet rs = ps.executeQuery(sql);
 			lista = new ArrayList<>();
 			while(rs.next()){

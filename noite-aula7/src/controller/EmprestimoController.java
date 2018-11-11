@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.Amigos;
 import model.Emprestimos;
 import model.EmprestimosDAOImpl;
 import model.Usuario;
@@ -33,24 +34,36 @@ public class EmprestimoController extends HttpServlet {
 		HttpSession session = request.getSession();
 		Usuario usuario = (Usuario) session.getAttribute("USUARIO");
 		if(usuario != null){
-			try {
-				if(acao.equals("pegarEmprestado") || acao.equals("Emprestar")){
-					emprestimo.setIdUsuario(usuario.getIdUsuario()); 
-					emprestimo.setNomeObjeto(request.getParameter("txtNomeObjeto"));
-					if(acao.equals("pegarEmprestado")){
-						emprestimo.setIdAmigoDono(1); // Teste
-					} else if(acao.equals("Emprestar")){
-						emprestimo.setIdAmigoEmprestimo(1); // Teste
+			Amigos a = (Amigos) session.getAttribute("AMIGO");
+			if(a != null){
+				try {
+					if(acao.equals("pegarEmprestado") || acao.equals("Emprestar")){
+						emprestimo.setIdUsuario(usuario.getIdUsuario()); 
+						emprestimo.setNomeObjeto(request.getParameter("txtNomeObjeto"));
+						if(acao.equals("pegarEmprestado")){
+							emprestimo.setIdAmigoDono(a.getIdAmigo());
+							emprestimo.setDataEmprestimo(request.getParameter("txtDataEmprestimo"));
+							emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
+							emprestimo.setStatus(request.getParameter("txtStatus"));
+							emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
+							emprestimoController.adicionaEmprestimosRecebidos(emprestimo);
+						} else if(acao.equals("Emprestar")){
+							emprestimo.setIdAmigoEmprestimo(a.getIdAmigo());
+							emprestimo.setDataEmprestimo(request.getParameter("txtDataEmprestimo"));
+							emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
+							emprestimo.setStatus(request.getParameter("txtStatus"));
+							emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
+							emprestimoController.adicionaEmprestimosRealizados(emprestimo);
+						}
+						mensagem = "Empréstimo adicionado com sucesso.";
 					}
-					emprestimo.setDataEmprestimo(request.getParameter("txtDataEmprestimo"));
-					emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
-					emprestimo.setStatus(request.getParameter("txtStatus"));
-					emprestimo.setDetalhesEmprestimo("txtDetalhes");
-					emprestimoController.adicionaEmprestimosRecebidos(emprestimo);
-					mensagem = "Empréstimo adicionado com sucesso.";
+				} catch(Throwable e){
+					mensagem = "Não foi possível adicionar o empréstimo.";
 				}
-			} catch(Throwable e){
-				mensagem = "Não foi possível adicionar o empréstimo.";
+			} else {
+				mensagem = "Nenhum amigo selecionado.";
+				session.setAttribute("MENSAGEM", mensagem);
+				response.sendRedirect("./emprestimos.jsp");
 			}
 			session.setAttribute("MENSAGEM", mensagem);
 			response.sendRedirect("./emprestimos.jsp");

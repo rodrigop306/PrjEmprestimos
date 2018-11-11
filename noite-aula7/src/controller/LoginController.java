@@ -40,6 +40,7 @@ public class LoginController extends HttpServlet {
 				usuario = usuarioDAO.getUsuario(usuario);
 				session.setAttribute("USUARIO", usuario);
 				response.sendRedirect("./emprestimos.jsp");
+				session.setAttribute("LISTA", null);
 			} else {
 				mensagem = "Usuário ou senha incorreto";
 				response.sendRedirect("./login.jsp");
