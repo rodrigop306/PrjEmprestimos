@@ -11,7 +11,7 @@
 	<script src="./js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
-	<h2>Amigos</h2>
+	<h2 align='Center'>Amigos</h2>
 	
 	<%  String msg = (String)session.getAttribute("MENSAGEM");
 		List<Amigos> lista = (List<Amigos>)session.getAttribute("LISTA");
@@ -47,8 +47,8 @@
     			<input type="text" class="form-control" id="txtTelefone" name="txtTelefone"/>
   			</div>   
 			<div class="form-group">
-				<button type="submit" class="btn btn-primary" name="cmd" value="adicionar">Adicionar</button>
-				<button type="submit" class="btn btn-primary" name="cmd" value="pesquisar">Pesquisar</button>
+				<button type="submit" class="btn btn-dark" name="cmd" value="adicionar">Adicionar</button>
+				<button type="submit" class="btn btn-dark" name="cmd" value="pesquisar">Pesquisar</button>
 			</div>																		
 		</div>
 		<div class="container">
@@ -62,8 +62,8 @@
 						<td><%=a.getTelefone()%></td>
 						<td>
 							<div class="form-group">
-								<button type="button" class="btn btn-primary" onclick="remover(<%=a.getIdAmigo()%>);">Remover</button>
-								<button type="button" class="btn btn-primary" onclick="editar(<%=a.getIdAmigo()%>);">Editar</button>
+								<button type="button" class="btn btn-dark" onclick="remover(<%=a.getIdAmigo()%>);">Remover</button>
+								<button type="button" class="btn btn-dark" onclick="editar(<%=a.getIdAmigo()%>);">Editar</button>
 							</div>																		
 						</td>
 					</tr>

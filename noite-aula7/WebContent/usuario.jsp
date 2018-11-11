@@ -11,7 +11,7 @@
 	<script src="./js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
-	<h2>Registrar-se</h2>
+	<h2 align='Center'>Registrar-se</h2>
 	
 	<%  String msg = (String)session.getAttribute("MENSAGEM");
 		List<Usuario> lista = (List<Usuario>)session.getAttribute("LISTA");
@@ -47,8 +47,8 @@
     			<input type="password" class="form-control" id="txtSenha" name="txtSenha"/>
   			</div>
 			<div class="form-group">
-				<button type="submit" class="btn btn-primary" name="cmd" value="adicionar">Adicionar</button>
-				<button type="submit" class="btn btn-primary" name="cmd" value="voltar">Voltar</button>
+				<button type="submit" class="btn btn-dark" name="cmd" value="adicionar">Adicionar</button>
+				<button type="submit" class="btn btn-dark" name="cmd" value="voltar">Voltar</button>
 			</div>																		
 		</div>
 	</form>

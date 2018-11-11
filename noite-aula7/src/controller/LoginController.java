@@ -31,24 +31,34 @@ public class LoginController extends HttpServlet {
 		String user = request.getParameter("txtLogin");
 		String senha = request.getParameter("txtPassword");
 		String mensagem = "";
+		String acao = request.getParameter("cmd");
 		Usuario usuario = new Usuario();
 		usuario.setLogin(user);
 		usuario.setSenha(senha);
-		try {
-			if (usuarioDAO.logar(usuario)) {
-				mensagem = "Usuário logado!";
-				usuario = usuarioDAO.getUsuario(usuario);
-				session.setAttribute("USUARIO", usuario);
-				response.sendRedirect("./emprestimos.jsp");
-				session.setAttribute("LISTA", null);
-			} else {
-				mensagem = "Usuário ou senha incorreto";
-				response.sendRedirect("./login.jsp");
+		if(acao.equals("Logar")){
+			try {
+				if (usuarioDAO.logar(usuario)) {
+					mensagem = "Usuário logado!";
+					usuario = usuarioDAO.getUsuario(usuario);
+					session.setAttribute("USUARIO", usuario);
+					response.sendRedirect("./principal.jsp");
+					session.setAttribute("LISTA", null);
+				} else {
+					mensagem = "Usuário ou senha incorreto";
+					response.sendRedirect("./index.jsp");
+					
+				}
+			} catch(Throwable e){
+				mensagem = "Não foi possível logar.";
+				response.sendRedirect("./index.jsp");
+				
 			}
-		} catch(Throwable e){
-			mensagem = "Não foi possível logar.";
-			response.sendRedirect("./login.jsp");
+			session.setAttribute("MENSAGEM", mensagem);
+		}else if(acao.equals("Cadastro")){
+			session.setAttribute("LISTA", null);
+			response.sendRedirect("./usuario.jsp");
+			session.setAttribute("LISTA", null);
 		}
-		session.setAttribute("MENSAGEM", mensagem);
+		
 	}
 }

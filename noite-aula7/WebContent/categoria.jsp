@@ -11,7 +11,7 @@
 	<script src="./js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
-	<h2>Categorias</h2>
+	<h2 align='Center'>Categorias</h2>
 	
 	<%  String msg = (String)session.getAttribute("MENSAGEM");
 		List<Categoria> lista = (List<Categoria>)session.getAttribute("LISTA");
@@ -39,8 +39,8 @@
     			<input type="text" class="form-control" id="txtTipo" name="txtTipo"/>
   			</div>
 			<div class="form-group">
-				<button type="submit" class="btn btn-primary" name="cmd" value="adicionar">Adicionar</button>
-				<button type="submit" class="btn btn-primary" name="cmd" value="pesquisar">Pesquisar</button>
+				<button type="submit" class="btn btn-dark" name="cmd" value="adicionar">Adicionar</button>
+				<button type="submit" class="btn btn-dark" name="cmd" value="pesquisar">Pesquisar</button>
 			</div>																		
 		</div>
 		<div class="container">
@@ -52,8 +52,8 @@
 						<td><%=c.getTipo()%></td>
 						<td>
 							<div class="form-group">
-								<button type="button" class="btn btn-primary" onclick="remover(<%=c.getId()%>);">Remover</button>
-								<button type="button" class="btn btn-primary" onclick="editar(<%=c.getId()%>);">Editar</button>
+								<button type="button" class="btn btn-dark" onclick="remover(<%=c.getId()%>);">Remover</button>
+								<button type="button" class="btn btn-dark" onclick="editar(<%=c.getId()%>);">Editar</button>
 							</div>																		
 						</td>
 					</tr>

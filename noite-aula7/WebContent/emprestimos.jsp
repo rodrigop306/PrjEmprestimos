@@ -14,7 +14,7 @@
         <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
 </head>
 <body>
-	<h2>Emprestimos</h2>
+	<h2 align='Center'>Emprestimos</h2>
 	
 	<%  String msg = (String)session.getAttribute("MENSAGEM");
 		List<Emprestimos> lista = (List<Emprestimos>)session.getAttribute("LISTA");
@@ -80,8 +80,8 @@
     			<input type="text" class="form-control" id="txtDetalhes" name="txtDetalhes"/>
 			</div>
 			<div class="form-group">
-				<button type="submit" class="btn btn-primary" name="cmd" value="adicionar">Adicionar</button>
-				<button type="submit" class="btn btn-primary" name="cmd" value="pesquisar">Pesquisar</button>
+				<button type="submit" class="btn btn-dark" name="cmd" value="adicionar">Adicionar</button>
+				<button type="submit" class="btn btn-dark" name="cmd" value="pesquisar">Pesquisar</button>
 			</div>																					
 		</div>
 		<script language="javascript">
@@ -112,8 +112,8 @@
 						<td><%=e.getDetalhesEmprestimo()%> </td>
 						<td>
 							<div class="form-group">
-								<button type="button" class="btn btn-primary" onclick="remover(<%=e.getIdEmprestimos()%>);">Remover</button>
-								<button type="button" class="btn btn-primary" onclick="editar(<%=e.getIdEmprestimos()%>);">Editar</button>
+								<button type="button" class="btn btn-dark" onclick="remover(<%=e.getIdEmprestimos()%>);">Remover</button>
+								<button type="button" class="btn btn-dark" onclick="editar(<%=e.getIdEmprestimos()%>);">Editar</button>
 							</div>																		
 						</td>
 					</tr>

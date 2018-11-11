@@ -11,7 +11,7 @@
 	<script src="./js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
-	<h2>Login do sistema</h2>
+	<h2 align='Center'>Login do sistema</h2>
 	<%
 		String msg = (String)session.getAttribute("MENSAGEM");
 		if (msg != null) {
@@ -31,7 +31,8 @@
     				<input type="password" class="form-control" id="txtPassword" name="txtPassword"/>
   				</div> 		
 				<div class="form-group">
-					<button type="submit" class="btn btn-primary" name="cmd" value="Logar">Logar</button>
+					<button type="submit" class="btn btn-dark" name="cmd" value="Logar">Logar</button>
+					<button type="submit" class="btn btn-dark" name="cmd" value="Cadastro">Registrar-se</button>
 				</div>
 			</div>
 	</form>
