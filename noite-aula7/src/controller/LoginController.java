@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import model.Usuario;
 import model.UsuarioDAOImpl;
+import sun.nio.cs.HistoricallyNamedCharset;
 
 @WebServlet("/LoginController")
 public class LoginController extends HttpServlet {
@@ -58,6 +59,7 @@ public class LoginController extends HttpServlet {
 			session.setAttribute("LISTA", null);
 			response.sendRedirect("./usuario.jsp");
 			session.setAttribute("LISTA", null);
+			
 		}
 		
 	}

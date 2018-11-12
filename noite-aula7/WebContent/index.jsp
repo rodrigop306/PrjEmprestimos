@@ -12,13 +12,7 @@
 </head>
 <body>
 	<h2 align='Center'>Login do sistema</h2>
-	<%
-		String msg = (String)session.getAttribute("MENSAGEM");
-		if (msg != null) {
-			session.setAttribute("MENSAGEM", null);
-	%>
-			<h3><script>alert("<%=msg%>");</script></h3>
-	<%  } %>
+	
 	<form action="./LoginController" method="post">
 		
 			<div class="container">

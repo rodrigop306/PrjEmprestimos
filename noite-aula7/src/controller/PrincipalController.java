@@ -33,17 +33,20 @@ public class PrincipalController extends HttpServlet {
 		if(u != null){
 			try {
 			if(acao.equals("Amigos")){
-				session.setAttribute("LISTA", null);
+				//session.setAttribute("LISTA", null);
+				//session.setAttribute("MENSAGEM", null);
 				response.sendRedirect("./amigos.jsp");
 			} else if(acao.equals("Objetos")){
-				session.setAttribute("LISTA", null);
-				response.sendRedirect("./emprestimo.jsp");
+				//session.setAttribute("LISTA", null);
+				//session.setAttribute("MENSAGEM", null);
+				response.sendRedirect("./emprestimos.jsp");
 			} else if(acao.equals("Categorias")){
-				session.setAttribute("LISTA", null);
+				//session.setAttribute("LISTA", null);
+				//session.setAttribute("MENSAGEM", null);
 				response.sendRedirect("./categoria.jsp");
 			} else if(acao.equals("Sair")){
-				session.invalidate();
 				response.sendRedirect("./index.jsp");
+				//session.invalidate();
 			}
 			} catch(Throwable e){
 				mensagem = "Não foi possível realizar a ação.";
@@ -53,6 +56,6 @@ public class PrincipalController extends HttpServlet {
 			response.sendRedirect("./index.jsp");
 		}
 		session.setAttribute("MENSAGEM", mensagem);
-		response.sendRedirect("./principal.jsp");
+		//response.sendRedirect("./principal.jsp");
 	}
 }
