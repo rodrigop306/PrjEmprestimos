@@ -50,7 +50,7 @@ public class LoginController extends HttpServlet {
 					
 				}
 			} catch(Throwable e){
-				mensagem = "Não foi possível logar.";
+				mensagem = "Não foi possível logar";
 				response.sendRedirect("./index.jsp");
 				
 			}

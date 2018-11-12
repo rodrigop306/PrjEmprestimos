@@ -11,7 +11,7 @@
 	<script src="./js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
-	<h2 align='Center'>Login do sistema</h2>
+	<h2 align='Center'>Login</h2>
 	
 	<form action="./LoginController" method="post">
 		

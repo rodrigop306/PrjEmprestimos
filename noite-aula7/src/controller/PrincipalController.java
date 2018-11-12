@@ -33,8 +33,7 @@ public class PrincipalController extends HttpServlet {
 		if(u != null){
 			try {
 			if(acao.equals("Amigos")){
-				//session.setAttribute("LISTA", null);
-				//session.setAttribute("MENSAGEM", null);
+				
 				response.sendRedirect("./amigos.jsp");
 			} else if(acao.equals("Objetos")){
 				//session.setAttribute("LISTA", null);
