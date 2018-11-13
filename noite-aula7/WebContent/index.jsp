@@ -11,7 +11,14 @@
 	<script src="./js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
-	<h2 align='Center'>Login</h2>
+	<h2 align='Center'>Login do sistema</h2>
+	<%
+		String msg = (String)session.getAttribute("MENSAGEM");
+		if (msg != null) {
+			session.setAttribute("MENSAGEM", null);
+	%>
+			<h3><script>alert("<%=msg%>");</script></h3>
+	<%  } %>
 	
 	<form action="./LoginController" method="post">
 		

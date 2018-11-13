@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="model.Emprestimos, java.util.List, java.util.ArrayList"%>   
+<%@ page import="model.Emprestimos, model.CategoriaDAOImpl, model.Categoria, java.util.List, java.util.ArrayList"%>   
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -18,6 +18,8 @@
 	
 	<%  String msg = (String)session.getAttribute("MENSAGEM");
 		List<Emprestimos> lista = (List<Emprestimos>)session.getAttribute("LISTA");
+		CategoriaDAOImpl cat = new CategoriaDAOImpl();
+		List<Categoria> listaCat = cat.listaCategoria();
 	   if (lista == null) { 
 	   	   lista = new ArrayList<Emprestimos>();
 	   } else { 
@@ -56,7 +58,9 @@
 			<div class="form-group">
     			<label for="txtCategoria">Categoria</label>
     			<select class="form-control" id="txtCategoria" name="txtCategoria">
-      				<option value="massa2k"></option>
+      				<%for(Categoria c : listaCat){ %>
+      					<option value="massa2k"><%= c.getTipo() %></option>
+      				<% } %>
 				</select>
 			</div>
 			<div class="form-group">

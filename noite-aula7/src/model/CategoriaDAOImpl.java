@@ -66,7 +66,7 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 			while(rs.next()){
 				Categoria cat = new Categoria();
 				cat.setId(rs.getInt("IDCATEGORIA"));
-				cat.setTipo(rs.getString("IDCATEGORIA"));
+				cat.setTipo(rs.getString("TIPO"));
 				lista.add(cat);
 			}
 			ps.close();
