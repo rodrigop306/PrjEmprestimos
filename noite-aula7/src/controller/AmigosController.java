@@ -41,7 +41,6 @@ public class AmigosController extends HttpServlet {
 					amigos.setTelefone(request.getParameter("txtTelefone"));
 					amigosController.adicionaAmigo(amigos);
 					mensagem = "Amigo adicionado com sucesso.";
-					System.out.println("Passei por aqui!");
 				} catch (Throwable e) {
 					mensagem = "Não foi possível adicionar o amigos.";
 				}

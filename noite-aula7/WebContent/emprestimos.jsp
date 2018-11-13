@@ -26,7 +26,7 @@
 		   session.setAttribute("LISTA", null);
 	   }
 	   
-	   if (msg != null) {
+	   if (msg != null || !msg.trim().equals("")) {
 		   session.setAttribute("MENSAGEM", null);
 	%>
 			<h3 class="alert alert-danger"><%=msg%></h3>
@@ -59,7 +59,7 @@
     			<label for="txtCategoria">Categoria</label>
     			<select class="form-control" id="txtCategoria" name="txtCategoria">
       				<%for(Categoria c : listaCat){ %>
-      					<option value="massa2k"><%= c.getTipo() %></option>
+      					<option value="categoria"><%= c.getTipo() %></option>
       				<% } %>
 				</select>
 			</div>
