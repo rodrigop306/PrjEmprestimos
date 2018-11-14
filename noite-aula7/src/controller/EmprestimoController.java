@@ -62,8 +62,6 @@ public class EmprestimoController extends HttpServlet {
 				}
 			} else {
 				mensagem = "Nenhum amigo selecionado.";
-				session.setAttribute("MENSAGEM", mensagem);
-				response.sendRedirect("./emprestimos.jsp");
 			}
 			session.setAttribute("MENSAGEM", mensagem);
 			response.sendRedirect("./emprestimos.jsp");
