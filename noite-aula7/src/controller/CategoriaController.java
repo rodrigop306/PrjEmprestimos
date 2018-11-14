@@ -39,24 +39,46 @@ public class CategoriaController extends HttpServlet {
 					c.setTipo(request.getParameter("txtTipo"));
 					categoriaDAO.adicionaCategoria(c);
 					mensagem = "Categoria adicionada com sucesso";
-				} 
+				}
 				if (acao.equals("pesquisar")) {
 					List<Categoria> lista = categoriaDAO.pesquisaCategoria(request.getParameter("txtTipo"));
 					session.setAttribute("LISTA", lista);
 					mensagem = "A busca retornou " + lista.size() + " resultados.";
-				} 
+				}
 				if ("editar".equals(acao)) {
 					String id = request.getParameter("txtId");
 					// Categoria s = sDao.pesquisarPorId(Long.parseLong(id));
 					Categoria c = categoriaDAO.getCategoria(Integer.parseInt(id));
 					session.setAttribute("CATEGORIA_ATUAL", c);
 					mensagem = "Detalhes da categoria com o Id " + id;
-				}if ("remover".equals(acao)) {
+				}
+				if ("remover".equals(acao)) {
 					String idCat = request.getParameter("txtId");
 					categoriaDAO.removeCategoria(Integer.parseInt(idCat));
 					mensagem = "Categoria com o Id " + idCat + " foi removido";
-					List<Categoria> lista = categoriaDAO.pesquisaCategoria(request.getParameter(""));
-					session.setAttribute("LISTA", lista); 
+					List<Categoria> lista = categoriaDAO.pesquisaCategoria("");
+					session.setAttribute("LISTA", lista);
+				} else if ("salvar".equals(acao)) {
+					Categoria c = new Categoria();
+					c.setId(Integer.parseInt(request.getParameter("txtId")));
+					c.setTipo(request.getParameter("txtTipo"));
+					categoriaDAO.editarCategoria(c);
+					mensagem = "Categoria atualizada com sucesso";
+					List<Categoria> lista = categoriaDAO.pesquisaCategoria("");
+					session.setAttribute("LISTA", lista);
+					mensagem = "Sorvete foi atualizado com sucesso";
+					
+					/*Sorvete s = new Sorvete();
+					String id = request.getParameter("txtId");
+					s.setSabor(request.getParameter("txtSabor"));
+					s.setPreco(Float.parseFloat(request.getParameter("txtPreco")));
+					s.setTipo(request.getParameter("txtTipo"));
+					s.setCobertura(request.getParameter("txtCobertura"));
+					s.setImagem(request.getParameter("txtImagem"));
+					sDao.salvar( Long.parseLong(id), s );
+					List<Sorvete> lista = sDao.presquisarPorSabor("");
+					session.setAttribute("LISTA", lista);				
+					msg = "Sorvete foi atualizado com sucesso";*/
 				}
 			} catch (Throwable e) {
 				mensagem = "Não foi possível realizar a ação.";
