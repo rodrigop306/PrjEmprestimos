@@ -46,14 +46,14 @@ public class EmprestimoController extends HttpServlet {
 							emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
 							emprestimo.setStatus(request.getParameter("txtStatus"));
 							emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
-							emprestimoController.adicionaEmprestimosRecebidos(emprestimo);
+							emprestimoController.adicionaEmprestimos(emprestimo);
 						} else if(acao.equals("Emprestar")){
 							emprestimo.setIdAmigoEmprestimo(a.getIdAmigo());
 							emprestimo.setDataEmprestimo(request.getParameter("txtDataEmprestimo"));
 							emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
 							emprestimo.setStatus(request.getParameter("txtStatus"));
 							emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
-							emprestimoController.adicionaEmprestimosRealizados(emprestimo);
+							emprestimoController.adicionaEmprestimos(emprestimo);
 						}
 						mensagem = "Empréstimo adicionado com sucesso.";
 					}

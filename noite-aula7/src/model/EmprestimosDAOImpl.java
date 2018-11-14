@@ -13,49 +13,42 @@ public class EmprestimosDAOImpl implements EmprestimosDAO {
 
 	private Connection con;
 
-	public void adicionaEmprestimosRealizados(Emprestimos emprestimos) {
+	public void adicionaEmprestimos(Emprestimos emprestimos) {
 		Conexao c = new Conexao();
 		con = c.abrir();
 		PreparedStatement ps;
 		try {
-			ps = con.prepareStatement(
-					"INSERT INTO EMPRESTIMOS (IDEMPRESTIMOS, IDUSUARIO, NOMEOBJETO, IDAMIGOEMPRESTIMO, DATAEMPRESTIMO, "
-							+ "DATADEVOLUCAO, STATUS, DETALHESEMPRESTIMOS) " + "VALUES (SEQUENCIA_PK_EMPRESTIMOS.nextVal,?,?,?,?,?,?,?)");
-			int i = 0;
-			ps.setInt(++i, emprestimos.getIdUsuario());
-			ps.setString(++i, emprestimos.getNomeObjeto());
-			ps.setInt(++i, emprestimos.getIdAmigoEmprestimo());
-			ps.setString(++i, emprestimos.getDataEmprestimo());
-			ps.setString(++i, emprestimos.getDataDevolucao());
-			ps.setString(++i, emprestimos.getStatus());
-			ps.setString(++i, emprestimos.getDetalhesEmprestimo());
-			ps.executeUpdate();
-			ps.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			con = c.fechar();
-		}
-	}
-
-	public void adicionaEmprestimosRecebidos(Emprestimos emprestimos) {
-		Conexao c = new Conexao();
-		con = c.abrir();
-		PreparedStatement ps;
-		try {
-			ps = con.prepareStatement(
-					"INSERT INTO EMPRESTIMOS (IDEMPRESTIMOS, IDUSUARIO, NOMEOBJETO, IDAMIGODONO, DATAEMPRESTIMO, "
-							+ "DATADEVOLUCAO, STATUS, DETALHESEMPRESTIMOS) " + "VALUES (SEQUENCIA_PK_EMPRESTIMOS.nextVal,?,?,?,?,?,?,?)");
-			int i = 0;
-			ps.setInt(++i, emprestimos.getIdUsuario());
-			ps.setString(++i, emprestimos.getNomeObjeto());
-			ps.setInt(++i, emprestimos.getIdAmigoDono());
-			ps.setString(++i, emprestimos.getDataEmprestimo());
-			ps.setString(++i, emprestimos.getDataDevolucao());
-			ps.setString(++i, emprestimos.getStatus());
-			ps.setString(++i, emprestimos.getDetalhesEmprestimo());
-			ps.executeUpdate();
-			ps.close();
+			if (emprestimos.getIdAmigoDono() != 0) {
+				ps = con.prepareStatement(
+						"INSERT INTO EMPRESTIMOS (IDEMPRESTIMOS, IDUSUARIO, NOMEOBJETO, IDAMIGODONO, DATAEMPRESTIMO, "
+								+ "DATADEVOLUCAO, STATUS, DETALHESEMPRESTIMOS) "
+								+ "VALUES (SEQUENCIA_PK_EMPRESTIMOS.nextVal,?,?,?,?,?,?,?)");
+				int i = 0;
+				ps.setInt(++i, emprestimos.getIdUsuario());
+				ps.setString(++i, emprestimos.getNomeObjeto());
+				ps.setInt(++i, emprestimos.getIdAmigoDono());
+				ps.setString(++i, emprestimos.getDataEmprestimo());
+				ps.setString(++i, emprestimos.getDataDevolucao());
+				ps.setString(++i, emprestimos.getStatus());
+				ps.setString(++i, emprestimos.getDetalhesEmprestimo());
+				ps.executeUpdate();
+				ps.close();
+			}else {
+				ps = con.prepareStatement(
+						"INSERT INTO EMPRESTIMOS (IDEMPRESTIMOS, IDUSUARIO, NOMEOBJETO, IDAMIGOEMPRESTIMO, DATAEMPRESTIMO, "
+								+ "DATADEVOLUCAO, STATUS, DETALHESEMPRESTIMOS) "
+								+ "VALUES (SEQUENCIA_PK_EMPRESTIMOS.nextVal,?,?,?,?,?,?,?)");
+				int i = 0;
+				ps.setInt(++i, emprestimos.getIdUsuario());
+				ps.setString(++i, emprestimos.getNomeObjeto());
+				ps.setInt(++i, emprestimos.getIdAmigoEmprestimo());
+				ps.setString(++i, emprestimos.getDataEmprestimo());
+				ps.setString(++i, emprestimos.getDataDevolucao());
+				ps.setString(++i, emprestimos.getStatus());
+				ps.setString(++i, emprestimos.getDetalhesEmprestimo());
+				ps.executeUpdate();
+				ps.close();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -68,9 +61,10 @@ public class EmprestimosDAOImpl implements EmprestimosDAO {
 		PreparedStatement ps;
 		List<Emprestimos> listaEmprestimos = null;
 		try {
-			ps = con.prepareStatement("SELECT IDEMPRESTIMOS, IDUSUARIO, NOMEOBJETO, IDAMIGOEMPRESTIMO, IDAMIGODONO, DATAEMPRESTIMO, "
-					+ "DATADEVOLUCAO, STATUS, DETALHESEMPRESTIMOS FROM EMPRESTIMOS "
-					+ "WHERE DATAEMPRESTIMO BETWEEN ? AND ? ");
+			ps = con.prepareStatement(
+					"SELECT IDEMPRESTIMOS, IDUSUARIO, NOMEOBJETO, IDAMIGOEMPRESTIMO, IDAMIGODONO, DATAEMPRESTIMO, "
+							+ "DATADEVOLUCAO, STATUS, DETALHESEMPRESTIMOS FROM EMPRESTIMOS "
+							+ "WHERE DATAEMPRESTIMO BETWEEN ? AND ? ");
 			ps.setString(1, dataDe);
 			ps.setString(1, dataAte);
 			ResultSet rs = ps.executeQuery();
@@ -104,12 +98,11 @@ public class EmprestimosDAOImpl implements EmprestimosDAO {
 		con = c.abrir();
 		PreparedStatement ps;
 		try {
-			ps = con.prepareStatement("UPDATE EMPRESTIMOS SET NOMEOBJETO = '"+emprestimos.getNomeObjeto()+"', "
-					+ "DATAEMPRESTIMO = '"+emprestimos.getDataEmprestimo()+"', "
-					+ "DATADEVOLUCAO = '"+emprestimos.getDataDevolucao()+"', "
-					+ "STATUS = '"+emprestimos.getStatus()+"', "
-					+ "DETALHESEMPRESTIMOS = '"+emprestimos.getDetalhesEmprestimo()+"' "
-					+ "WHERE IDEMPRESTIMOS = "+emprestimos.getIdEmprestimos()+" AND IDUSUARIO = "+emprestimos.getIdUsuario()+"");
+			ps = con.prepareStatement("UPDATE EMPRESTIMOS SET NOMEOBJETO = '" + emprestimos.getNomeObjeto() + "', "
+					+ "DATAEMPRESTIMO = '" + emprestimos.getDataEmprestimo() + "', " + "DATADEVOLUCAO = '"
+					+ emprestimos.getDataDevolucao() + "', " + "STATUS = '" + emprestimos.getStatus() + "', "
+					+ "DETALHESEMPRESTIMOS = '" + emprestimos.getDetalhesEmprestimo() + "' " + "WHERE IDEMPRESTIMOS = "
+					+ emprestimos.getIdEmprestimos() + " AND IDUSUARIO = " + emprestimos.getIdUsuario() + "");
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
