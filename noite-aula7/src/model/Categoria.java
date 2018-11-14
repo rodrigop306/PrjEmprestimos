@@ -2,8 +2,8 @@ package model;
 
 public class Categoria {
 
-	private int idCategoria;
-	private String tipo;
+	private int idCategoria=0;
+	private String tipo="";
 
 	public int getId() {
 		return idCategoria;

@@ -79,12 +79,12 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 		return lista;
 	}
 
-	public boolean removeCategoria(Categoria categoria) {
+	public boolean removeCategoria(int idCategoria) {
 		Conexao c = new Conexao();
 		con = c.abrir();
 		PreparedStatement ps;
 		try {
-			ps = con.prepareStatement("DELETE FROM CATEGORIA WHERE IDCATEGORIA = '"+categoria.getId()+"' ");
+			ps = con.prepareStatement("DELETE FROM CATEGORIA WHERE IDCATEGORIA = "+idCategoria+" ");
 			ps.execute();
 			ps.close();
 			return true;
@@ -108,6 +108,27 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 			e.printStackTrace();
 		} 
 		con = c.fechar();
+	}
+
+	public Categoria getCategoria(int id) {
+		Conexao c = new Conexao();
+		con = c.abrir();
+		PreparedStatement ps;
+		Categoria categoria = null;
+		try {
+			ps = con.prepareStatement("SELECT IDCATEGORIA, TIPO FROM CATEGORIA WHERE IDCATEGORIA = ?");
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				categoria = new Categoria();
+				categoria.setId(rs.getInt("IDCATEGORIA"));
+				categoria.setTipo(rs.getString("TIPO"));
+			}
+			ps.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		return categoria;
 	}
 
 }

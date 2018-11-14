@@ -54,7 +54,7 @@ public class PrincipalController extends HttpServlet {
 			mensagem = "Faça o login para acessar a página.";
 			response.sendRedirect("./index.jsp");
 		}
-		session.setAttribute("MENSAGEM", mensagem);
+		//session.setAttribute("MENSAGEM", mensagem);
 		//response.sendRedirect("./principal.jsp");
 	}
 }

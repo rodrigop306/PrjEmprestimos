@@ -9,6 +9,22 @@
 	<link rel="stylesheet" href="./css/bootstrap.min.css"/>
 	<script src="./js/bootstrap.min.js"></script>
 	<script src="./js/jquery-3.3.1.min.js"></script>
+		<script>
+		function remover( id ) {
+			if (confirm("Remove o sorvete com id " + id)) {
+				$('#formCategoria').empty();
+				$('#formCategoria').append('<input type="hidden" name="txtId" value="' + id + '"/>');
+				$('#formCategoria').append('<input type="hidden" name="cmd" value="remover"/>');
+				$('#formCategoria').submit();
+			}
+		}
+		function editar( id ) {
+			$('#formCategoria').empty();
+			$('#formCategoria').append('<input type="hidden" name="txtId" value="' + id + '"/>');
+			$('#formCategoria').append('<input type="hidden" name="cmd" value="editar"/>');
+			$('#formCategoria').submit();
+		}		
+	</script>
 </head>
 <body>
 	<h2 align='Center'>Categorias</h2>
@@ -21,27 +37,40 @@
 		   session.setAttribute("LISTA", null);
 	   }
 	   
+	   Categoria categoriaAtual = (Categoria)session.getAttribute("CATEGORIA_ATUAL");
+	   if (categoriaAtual == null) { 
+		   categoriaAtual = new Categoria();
+	   } else { 
+		   session.setAttribute("CATEGORIA_ATUAL", null);
+	   }
+	   
 	   if (msg != null) {
 		   session.setAttribute("MENSAGEM", null);
 	%>
 			<h3 class="alert alert-danger"><%=msg%></h3>
-	<% } %>
+<% } %>
 	
 	
 	<form id="formCategoria" action="./CategoriaController" method="post">
 		<div class="container">
 			<div class="form-group">
     			<label for="txtId">Id</label>
-    			<input type="text" class="form-control" id="txtId" name="txtId" readonly/>
+    			<input type="text" class="form-control" id="txtId" name="txtId" value="<%=categoriaAtual.getId()%>" readonly/>
   			</div>
+  			<div class="form-group">
+    			<label for="txtSabor">Tipo</label>
+    			<input type="text" class="form-control" id="txtTipo" name="txtTipo" value="<%=categoriaAtual.getTipo()%>"/>
+			</div>
+  			
+			
 			<div class="form-group">
-    			<label for="txtTipo">Tipo</label>
-    			<input type="text" class="form-control" id="txtTipo" name="txtTipo"/>
-  			</div>
-			<div class="form-group">
-				<button type="submit" class="btn btn-dark" name="cmd" value="adicionar">Adicionar</button>
+				<%if (categoriaAtual.getId() == 0) { %>
+					<button type="submit" class="btn btn-dark" name="cmd" value="adicionar">Adicionar</button>
+				<%} else { %>
+					<button type="submit" class="btn btn-dark" name="cmd" value="salvar">Salvar</button>
+				<%} %>
 				<button type="submit" class="btn btn-dark" name="cmd" value="pesquisar">Pesquisar</button>
-			</div>																		
+</div> 																	
 		</div>
 		<div class="container">
 			<table class="table table-striped">
@@ -62,5 +91,6 @@
 			</table>
 		</div>
 	</form>
+
 </body>
 </html>

@@ -32,19 +32,33 @@ public class CategoriaController extends HttpServlet {
 		HttpSession session = request.getSession();
 		categoriaDAO = new CategoriaDAOImpl();
 		Usuario u = (Usuario) session.getAttribute("USUARIO");
-		if(u != null){
+		if (u != null) {
 			try {
-			if(acao.equals("adicionar")){
-				Categoria c = new Categoria();
-				c.setTipo(request.getParameter("txtTipo"));
-				categoriaDAO.adicionaCategoria(c);
-				mensagem = "Categoria adicionada com sucesso";
-			} else if(acao.equals("pesquisar")){
-				List<Categoria> lista = categoriaDAO.pesquisaCategoria(request.getParameter("txtTipo"));
-				session.setAttribute("LISTA", lista);
-				mensagem = "A busca retornou "+lista.size()+" resultados.";
-			}
-			} catch(Throwable e){
+				if (acao.equals("adicionar")) {
+					Categoria c = new Categoria();
+					c.setTipo(request.getParameter("txtTipo"));
+					categoriaDAO.adicionaCategoria(c);
+					mensagem = "Categoria adicionada com sucesso";
+				} 
+				if (acao.equals("pesquisar")) {
+					List<Categoria> lista = categoriaDAO.pesquisaCategoria(request.getParameter("txtTipo"));
+					session.setAttribute("LISTA", lista);
+					mensagem = "A busca retornou " + lista.size() + " resultados.";
+				} 
+				if ("editar".equals(acao)) {
+					String id = request.getParameter("txtId");
+					// Categoria s = sDao.pesquisarPorId(Long.parseLong(id));
+					Categoria c = categoriaDAO.getCategoria(Integer.parseInt(id));
+					session.setAttribute("CATEGORIA_ATUAL", c);
+					mensagem = "Detalhes da categoria com o Id " + id;
+				}if ("remover".equals(acao)) {
+					String idCat = request.getParameter("txtId");
+					categoriaDAO.removeCategoria(Integer.parseInt(idCat));
+					mensagem = "Categoria com o Id " + idCat + " foi removido";
+					List<Categoria> lista = categoriaDAO.pesquisaCategoria(request.getParameter(""));
+					session.setAttribute("LISTA", lista); 
+				}
+			} catch (Throwable e) {
 				mensagem = "Não foi possível realizar a ação.";
 			}
 		} else {
