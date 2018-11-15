@@ -44,17 +44,9 @@ public class AmigosController extends HttpServlet {
 				}
 				if(acao.equals("pesquisar")) {
 					String nomeAmigo = request.getParameter("txtNome");
-					if(!nomeAmigo.trim().equals("")){
-						List<Amigos> lista = amigosController.pesquisarAmigo(nomeAmigo, usuario.getIdUsuario());
-						if(lista != null){
-							mensagem = "Foram encontrados "+lista.size()+" amigos.";
-						} else {
-							mensagem = "A busca não retornou resultados.";
-						}
-						session.setAttribute("LISTA", lista);
-					} else {
-						mensagem = "Digite um nome para realizar a pesquisa.";
-					}
+					List<Amigos> lista = amigosController.pesquisarAmigo(nomeAmigo, usuario.getIdUsuario());
+					session.setAttribute("LISTA", lista);
+					mensagem = "Foram encontrados "+lista.size()+" amigos.";
 				}
 				if ("editar".equals(acao)) {
 					Amigos amigos = new Amigos();

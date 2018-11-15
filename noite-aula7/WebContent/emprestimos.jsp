@@ -26,7 +26,7 @@
 		   session.setAttribute("LISTA", null);
 	   }
 	   
-	   if (msg != null || !msg.trim().equals("")) {
+	   if (msg != null) {
 		   session.setAttribute("MENSAGEM", null);
 	%>
 			<h3 class="alert alert-danger"><%=msg%></h3>
