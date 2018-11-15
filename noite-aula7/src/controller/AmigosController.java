@@ -28,13 +28,13 @@ public class AmigosController extends HttpServlet {
 			throws ServletException, IOException {
 		String mensagem = "";
 		String acao = request.getParameter("cmd");
-		Amigos amigos = new Amigos();
 		amigosController = new AmigosDAOImpl();
 		HttpSession session = request.getSession();
 		Usuario usuario = (Usuario) session.getAttribute("USUARIO");
 		if (usuario != null) {
 			try {
 				if(acao.equals("adicionar")){
+					Amigos amigos = new Amigos();
 					amigos.setIdUsuario(usuario.getIdUsuario());
 					amigos.setNome(request.getParameter("txtNome"));
 					amigos.setEmail(request.getParameter("txtEmail"));				
@@ -56,21 +56,32 @@ public class AmigosController extends HttpServlet {
 						mensagem = "Digite um nome para realizar a pesquisa.";
 					}
 				}
+				if ("editar".equals(acao)) {
+					Amigos amigos = new Amigos();
+					String id = request.getParameter("txtId");
+					amigos = amigosController.getAmigo(Integer.parseInt(id));
+					session.setAttribute("AMIGO_ATUAL", amigos);
+					mensagem = "Detalhes do amigo com o Id " + id;
+				}
 				if(acao.equals("remover")){
 					String id = request.getParameter("txtId");
 					amigosController.removeAmigo(Integer.parseInt(id));
-					mensagem = "Amigo removido com sucesso.";
+					mensagem = "Categoria com o Id " + id + " foi removido";
+					List<Amigos> lista = amigosController.pesquisarAmigo("", usuario.getIdUsuario());
+					session.setAttribute("LISTA", lista);
 				}
-				if(acao.equals("editar")){
+				if ("salvar".equals(acao)) {
+					Amigos amigos = new Amigos();
 					amigos.setIdAmigo(Integer.parseInt(request.getParameter("txtId")));
-					amigos.setIdUsuario(usuario.getIdUsuario());
 					amigos.setNome(request.getParameter("txtNome"));
 					amigos.setEmail(request.getParameter("txtEmail"));				
 					amigos.setTelefone(request.getParameter("txtTelefone"));
-					amigosController.editaAmigo(amigos);
-					mensagem = "Informações de amigo editada com sucesso.";
-				}
-			} catch(Throwable e){
+					amigosController.editaAmigo(amigos);				
+					List<Amigos> lista = amigosController.pesquisarAmigo("", usuario.getIdUsuario());
+					session.setAttribute("LISTA", lista);
+					mensagem = "Amigo atualizada com sucesso";
+				} 
+			}catch(Throwable e){
 				mensagem = "Não foi possível realizar a ação.";
 			}
 			session.setAttribute("MENSAGEM", mensagem);

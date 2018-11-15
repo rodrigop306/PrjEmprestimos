@@ -75,13 +75,13 @@ public class AmigosDAOImpl implements AmigosDAO{
 		con = c.fechar();
 	}
 
-	public Amigos getAmigo(String nome){
+	public Amigos getAmigo(int id) {
 		Conexao c = new Conexao();
 		con = c.abrir();
 		Amigos a = null;
 		try {
 			Statement ps = con.createStatement();
-			String sql = "SELECT IDAMIGO, IDUSUARIO, NOME, EMAIL, TELEFONE FROM AMIGOS WHERE NOME = '"+nome+"' ";
+			String sql = "SELECT IDAMIGO, IDUSUARIO, NOME, EMAIL, TELEFONE FROM AMIGOS WHERE IDAMIGO = "+id+" ";
 			ResultSet rs = ps.executeQuery(sql);
 			if(rs.next()){
 				a = new Amigos();
@@ -128,20 +128,18 @@ public class AmigosDAOImpl implements AmigosDAO{
 		return lista;
 	}
 
-	public void editaAmigo(Amigos amigos) {
+	public void editaAmigo(Amigos amigo) {
 		Conexao c = new Conexao();
 		con = c.abrir();
 		PreparedStatement ps;
 		try {
-			ps = con.prepareStatement("UPDATE AMIGOS SET NOME = ?, EMAIL = ?, TELEFONE = ? WHERE IDAMIGO = ?");
-			int i = 0;
-			ps.setString(++i, amigos.getNome());
-			ps.setString(++i, amigos.getEmail());
-			ps.setString(++i, amigos.getTelefone());
-			ps.setInt(++i, amigos.getIdAmigo());
+			ps = con.prepareStatement("UPDATE AMIGOS SET NOME= '"+amigo.getNome()+"', EMAIL= '"+amigo.getEmail()+"', TELEFONE= '"+amigo.getTelefone()+"' WHERE IDAMIGO = "+amigo.getIdAmigo()+" ");
+			ps.executeUpdate();
+			ps.close();
 		} catch(SQLException e){
 			e.printStackTrace();
-		}
+		} 
+		con = c.fechar();
 	}
 
 }

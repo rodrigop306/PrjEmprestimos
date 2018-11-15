@@ -4,9 +4,9 @@ public class Amigos {
 
 	private int idUsuario;
 	private int idAmigos;
-	private String nome;
-	private String email;
-	private String telefone;
+	private String nome = "";
+	private String email = "";
+	private String telefone = "";
 
 	public int getIdAmigo() {
 		return idAmigos;

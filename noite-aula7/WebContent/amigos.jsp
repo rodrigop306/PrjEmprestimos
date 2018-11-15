@@ -9,6 +9,22 @@
 	<link rel="stylesheet" href="./css/bootstrap.min.css"/>
 	<script src="./js/bootstrap.min.js"></script>
 	<script src="./js/jquery-3.3.1.min.js"></script>
+	<script>
+		function remover( id ) {
+			if (confirm("Remove o amigo com id " + id)) {
+				$('#formAmigos').empty();
+				$('#formAmigos').append('<input type="hidden" name="txtId" value="' + id + '"/>');
+				$('#formAmigos').append('<input type="hidden" name="cmd" value="remover"/>');
+				$('#formAmigos').submit();
+			}
+		}
+		function editar( id ) {
+			$('#formAmigos').empty();
+			$('#formAmigos').append('<input type="hidden" name="txtId" value="' + id + '"/>');
+			$('#formAmigos').append('<input type="hidden" name="cmd" value="editar"/>');
+			$('#formAmigos').submit();
+		}		
+	</script>
 </head>
 <body>
 	<h2 align='Center'>Amigos</h2>
@@ -21,6 +37,13 @@
 		   session.setAttribute("LISTA", null);
 	   }
 	   
+	   Amigos amigoAtual = (Amigos) session.getAttribute("AMIGO_ATUAL");
+		if (amigoAtual == null) {
+			amigoAtual = new Amigos();
+		} else {
+			session.setAttribute("AMIGO_ATUAL", null);
+		}
+	   
 	   if (msg != null) {
 		   session.setAttribute("MENSAGEM", null);
 	%>
@@ -32,24 +55,29 @@
 		<div class="container">
 			<div class="form-group">
     			<label for="txtId">Id</label>
-    			<input type="text" class="form-control" id="txtId" name="txtId" readonly/>
+    			<input type="text" class="form-control" id="txtId" name="txtId" value="<%=amigoAtual.getIdAmigo()%>" readonly/>
   			</div>
 			<div class="form-group">
     			<label for="txtNome">Nome</label>
-    			<input type="text" class="form-control" id="txtNome" name="txtNome"/>
+    			<input type="text" class="form-control" id="txtNome" name="txtNome" value="<%=amigoAtual.getNome()%>"/>
   			</div>  	
 			<div class="form-group">
     			<label for="txtEmail">Email</label>
-    			<input type="text" class="form-control" id="txtEmail" name="txtEmail"/>
+    			<input type="text" class="form-control" id="txtEmail" name="txtEmail" value="<%=amigoAtual.getEmail()%>"/>
   			</div>
   			<div class="form-group">
     			<label for="txtTelefone">Telefone</label>
-    			<input type="text" class="form-control" id="txtTelefone" name="txtTelefone"/>
+    			<input type="text" class="form-control" id="txtTelefone" name="txtTelefone" value="<%=amigoAtual.getTelefone()%>"/>
   			</div>   
 			<div class="form-group">
-				<button type="submit" class="btn btn-dark" name="cmd" value="adicionar">Adicionar</button>
+				<%if (amigoAtual.getIdAmigo() == 0) {%>
+				<button type="submit" class="btn btn-dark" name="cmd"
+					value="adicionar">Adicionar</button>
+				<%} else {%>
+				<button type="submit" class="btn btn-dark" name="cmd" value="salvar">Salvar</button>
+				<%}%>
 				<button type="submit" class="btn btn-dark" name="cmd" value="pesquisar">Pesquisar</button>
-			</div>																		
+			</div>																	
 		</div>
 		<div class="container">
 			<table class="table table-striped">
