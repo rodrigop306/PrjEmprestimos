@@ -13,7 +13,7 @@ import conexao.Conexao;
 public class AmigosDAOImpl implements AmigosDAO{
 
 	private Connection con;
-	
+
 	public void adicionaAmigo(Amigos amigos) {
 		Conexao c = new Conexao();
 		con = c.abrir();
@@ -60,26 +60,19 @@ public class AmigosDAOImpl implements AmigosDAO{
 		return null;
 	}
 
-	public boolean removeAmigo(String nome) {
+	public void removeAmigo(int id) {
 		Conexao c = new Conexao();
 		PreparedStatement ps;
+		con = c.abrir();
 		try {
-			Amigos a = getAmigo(nome);
-			if(a == null){
-				return false;
-			} else {
-				con = c.abrir();
-				ps = con.prepareStatement("DELETE FROM AMIGOS WHERE IDAMIGO = ?");
-				ps.setInt(1, a.getIdAmigo());
-				ps.execute();
-				ps.close();
-				return true;
-			}
+			ps = con.prepareStatement("DELETE FROM AMIGOS WHERE IDAMIGO = ?");
+			ps.setInt(1, id);
+			ps.execute();
+			ps.close();
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
 		con = c.fechar();
-		return false;
 	}
 
 	public Amigos getAmigo(String nome){
@@ -110,7 +103,6 @@ public class AmigosDAOImpl implements AmigosDAO{
 		return a;
 	}
 
-	@Override
 	public List<Amigos> listarAmigo() {
 		Conexao c = new Conexao();
 		con = c.abrir();
@@ -134,6 +126,22 @@ public class AmigosDAOImpl implements AmigosDAO{
 			e.printStackTrace();
 		}
 		return lista;
+	}
+
+	public void editaAmigo(Amigos amigos) {
+		Conexao c = new Conexao();
+		con = c.abrir();
+		PreparedStatement ps;
+		try {
+			ps = con.prepareStatement("UPDATE AMIGOS SET NOME = ?, EMAIL = ?, TELEFONE = ? WHERE IDAMIGO = ?");
+			int i = 0;
+			ps.setString(++i, amigos.getNome());
+			ps.setString(++i, amigos.getEmail());
+			ps.setString(++i, amigos.getTelefone());
+			ps.setInt(++i, amigos.getIdAmigo());
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
 	}
 
 }

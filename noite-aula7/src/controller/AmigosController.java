@@ -33,34 +33,45 @@ public class AmigosController extends HttpServlet {
 		HttpSession session = request.getSession();
 		Usuario usuario = (Usuario) session.getAttribute("USUARIO");
 		if (usuario != null) {
-			if(acao.equals("adicionar")){
-				try {
+			try {
+				if(acao.equals("adicionar")){
 					amigos.setIdUsuario(usuario.getIdUsuario());
 					amigos.setNome(request.getParameter("txtNome"));
 					amigos.setEmail(request.getParameter("txtEmail"));				
 					amigos.setTelefone(request.getParameter("txtTelefone"));
 					amigosController.adicionaAmigo(amigos);
 					mensagem = "Amigo adicionado com sucesso.";
-				} catch (Throwable e) {
-					mensagem = "Não foi possível adicionar o amigos.";
 				}
-			}
-			if(acao.equals("pesquisar")) {
-				String nomeAmigo = request.getParameter("txtNome");
-				if(!nomeAmigo.trim().equals("")){
-					List<Amigos> lista = amigosController.pesquisarAmigo(nomeAmigo, usuario.getIdUsuario());
-					if(lista != null){
-						mensagem = "Foram encontrados "+lista.size()+" amigos.";
+				if(acao.equals("pesquisar")) {
+					String nomeAmigo = request.getParameter("txtNome");
+					if(!nomeAmigo.trim().equals("")){
+						List<Amigos> lista = amigosController.pesquisarAmigo(nomeAmigo, usuario.getIdUsuario());
+						if(lista != null){
+							mensagem = "Foram encontrados "+lista.size()+" amigos.";
+						} else {
+							mensagem = "A busca não retornou resultados.";
+						}
+						session.setAttribute("LISTA", lista);
 					} else {
-						mensagem = "A busca não retornou resultados.";
+						mensagem = "Digite um nome para realizar a pesquisa.";
 					}
-					session.setAttribute("LISTA", lista);
-				} else {
-					mensagem = "Digite um nome para realizar a pesquisa.";
 				}
-			}
-			if(acao.equals("remover")){
-				// TODO
+				if(acao.equals("remover")){
+					String id = request.getParameter("txtId");
+					amigosController.removeAmigo(Integer.parseInt(id));
+					mensagem = "Amigo removido com sucesso.";
+				}
+				if(acao.equals("editar")){
+					amigos.setIdAmigo(Integer.parseInt(request.getParameter("txtId")));
+					amigos.setIdUsuario(usuario.getIdUsuario());
+					amigos.setNome(request.getParameter("txtNome"));
+					amigos.setEmail(request.getParameter("txtEmail"));				
+					amigos.setTelefone(request.getParameter("txtTelefone"));
+					amigosController.editaAmigo(amigos);
+					mensagem = "Informações de amigo editada com sucesso.";
+				}
+			} catch(Throwable e){
+				mensagem = "Não foi possível realizar a ação.";
 			}
 			session.setAttribute("MENSAGEM", mensagem);
 			response.sendRedirect("./amigos.jsp");
