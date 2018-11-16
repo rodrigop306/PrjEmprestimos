@@ -92,17 +92,22 @@ public class EmprestimosDAOImpl implements EmprestimosDAO {
 		return listaEmprestimos;
 	}
 
-	@Override
 	public void atualizaEmprestimo(Emprestimos emprestimos) {
 		Conexao c = new Conexao();
 		con = c.abrir();
 		PreparedStatement ps;
 		try {
-			ps = con.prepareStatement("UPDATE EMPRESTIMOS SET NOMEOBJETO = '" + emprestimos.getNomeObjeto() + "', "
-					+ "DATAEMPRESTIMO = '" + emprestimos.getDataEmprestimo() + "', " + "DATADEVOLUCAO = '"
-					+ emprestimos.getDataDevolucao() + "', " + "STATUS = '" + emprestimos.getStatus() + "', "
-					+ "DETALHESEMPRESTIMOS = '" + emprestimos.getDetalhesEmprestimo() + "' " + "WHERE IDEMPRESTIMOS = "
-					+ emprestimos.getIdEmprestimos() + " AND IDUSUARIO = " + emprestimos.getIdUsuario() + "");
+			ps = con.prepareStatement("UPDATE EMPRESTIMOS SET NOMEOBJETO = ?, DATAEMPRESTIMO = ?, DATADEVOLUCAO = ?, "
+					+ "STATUS = ?, DETALHESEMPRESTIMOS = ? WHERE IDEMPRESTIMOS = ? "
+					+ "AND IDUSUARIO = ? ");
+			int i = 0;
+			ps.setString(++i, emprestimos.getNomeObjeto());
+			ps.setString(++i, emprestimos.getDataEmprestimo());
+			ps.setString(++i, emprestimos.getDataDevolucao());
+			ps.setString(++i, emprestimos.getStatus());
+			ps.setString(++i, emprestimos.getDetalhesEmprestimo());
+			ps.setInt(++i, emprestimos.getIdEmprestimos());
+			ps.setInt(++i, emprestimos.getIdUsuario());
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {

@@ -33,10 +33,10 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 		Conexao c = new Conexao();
 		con = c.abrir();
 		List<Categoria> listaCategoria = null;
+		PreparedStatement ps;
 		try {
-			Statement ps = con.createStatement();
-			String sql = "SELECT IDCATEGORIA, TIPO FROM CATEGORIA WHERE TIPO LIKE '%"+tipo+"%' ";
-			ResultSet rs = ps.executeQuery(sql);
+			ps = con.prepareStatement("SELECT IDCATEGORIA, TIPO FROM CATEGORIA WHERE TIPO LIKE '%"+tipo+"%' ");
+			ResultSet rs = ps.executeQuery();
 			listaCategoria = new ArrayList<>();
 			while(rs.next()) {
 				Categoria categoria = new Categoria();
@@ -53,7 +53,6 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 		return listaCategoria;
 	}
 
-	@Override
 	public List<Categoria> listaCategoria() {
 		Conexao c = new Conexao();
 		con = c.abrir();
@@ -84,7 +83,8 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 		con = c.abrir();
 		PreparedStatement ps;
 		try {
-			ps = con.prepareStatement("DELETE FROM CATEGORIA WHERE IDCATEGORIA = "+idCategoria+" ");
+			ps = con.prepareStatement("DELETE FROM CATEGORIA WHERE IDCATEGORIA = ? ");
+			ps.setInt(1, idCategoria);
 			ps.execute();
 			ps.close();
 			return true;
@@ -95,13 +95,14 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 		return false;
 	}
 
-	@Override
 	public void editarCategoria(Categoria categoria) {
 		Conexao c = new Conexao();
 		con = c.abrir();
 		PreparedStatement ps;
 		try {
-			ps = con.prepareStatement("UPDATE CATEGORIA SET TIPO = '"+categoria.getTipo()+"' WHERE IDCATEGORIA = "+categoria.getId()+" ");
+			ps = con.prepareStatement("UPDATE CATEGORIA SET TIPO = ? WHERE IDCATEGORIA = ? ");
+			ps.setString(1, categoria.getTipo());
+			ps.setInt(2, categoria.getId());
 			ps.executeUpdate();
 			ps.close();
 		} catch(SQLException e){

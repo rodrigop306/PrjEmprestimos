@@ -78,7 +78,6 @@ public class UsuarioDAOImpl implements UsuarioDAO{
 		}
 	}
 
-	@Override
 	public boolean existeUsuario(String login) {
 		Conexao c = new Conexao();
 		con = c.abrir();

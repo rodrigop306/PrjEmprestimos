@@ -78,11 +78,12 @@ public class AmigosDAOImpl implements AmigosDAO{
 	public Amigos getAmigo(int id) {
 		Conexao c = new Conexao();
 		con = c.abrir();
+		PreparedStatement ps;
 		Amigos a = null;
 		try {
-			Statement ps = con.createStatement();
-			String sql = "SELECT IDAMIGO, IDUSUARIO, NOME, EMAIL, TELEFONE FROM AMIGOS WHERE IDAMIGO = "+id+" ";
-			ResultSet rs = ps.executeQuery(sql);
+			ps = con.prepareStatement("SELECT IDAMIGO, IDUSUARIO, NOME, EMAIL, TELEFONE FROM AMIGOS WHERE IDAMIGO = ? ");
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
 			if(rs.next()){
 				a = new Amigos();
 				a.setIdAmigo(rs.getInt("IDAMIGO"));
@@ -107,10 +108,10 @@ public class AmigosDAOImpl implements AmigosDAO{
 		Conexao c = new Conexao();
 		con = c.abrir();
 		List<Amigos> lista = null;
+		PreparedStatement ps;
 		try {
-			Statement ps = con.createStatement();
-			String sql = "SELECT A.IDAMIGO, A.IDUSUARIO, A.NOME, A.EMAIL, A.TELEFONE FROM AMIGOS A INNER JOIN USUARIO U ON U.IDUSUARIO = A.IDUSUARIO";
-			ResultSet rs = ps.executeQuery(sql);
+			ps = con.prepareStatement("SELECT A.IDAMIGO, A.IDUSUARIO, A.NOME, A.EMAIL, A.TELEFONE FROM AMIGOS A INNER JOIN USUARIO U ON U.IDUSUARIO = A.IDUSUARIO");
+			ResultSet rs = ps.executeQuery();
 			lista = new ArrayList<>();
 			while(rs.next()){
 				Amigos a = new Amigos();
@@ -133,7 +134,12 @@ public class AmigosDAOImpl implements AmigosDAO{
 		con = c.abrir();
 		PreparedStatement ps;
 		try {
-			ps = con.prepareStatement("UPDATE AMIGOS SET NOME= '"+amigo.getNome()+"', EMAIL= '"+amigo.getEmail()+"', TELEFONE= '"+amigo.getTelefone()+"' WHERE IDAMIGO = "+amigo.getIdAmigo()+" ");
+			ps = con.prepareStatement("UPDATE AMIGOS SET NOME= ?, EMAIL = ?, TELEFONE= ? WHERE IDAMIGO = ? ");
+			int i = 0;
+			ps.setString(++i, amigo.getNome());
+			ps.setString(++i, amigo.getEmail());
+			ps.setString(++i, amigo.getTelefone());
+			ps.setInt(++i, amigo.getIdAmigo());
 			ps.executeUpdate();
 			ps.close();
 		} catch(SQLException e){
