@@ -33,10 +33,10 @@ public class UsuarioController extends HttpServlet {
 		String txtNome = (request.getParameter("txtNome"));
 		String txtSenha = (request.getParameter("txtSenha"));
 		HttpSession session = request.getSession();
-		if((!txtLogin.trim().equals("") && txtLogin != null)
-				&& (!txtNome.trim().equals("") && txtNome != null)
-				&& (!txtSenha.trim().equals("") && txtSenha != null)){
-			if (cmd.equals("adicionar")) {
+		if (cmd.equals("adicionar")) {
+			if((!txtLogin.trim().equals("") && txtLogin != null)
+					&& (!txtNome.trim().equals("") && txtNome != null)
+					&& (!txtSenha.trim().equals("") && txtSenha != null)){
 				try {
 					usuarioController = new UsuarioDAOImpl();
 					if(!usuarioController.existeUsuario(txtLogin)){
@@ -59,12 +59,12 @@ public class UsuarioController extends HttpServlet {
 				}
 				session.setAttribute("MENSAGEM", mensagem);
 			} else {
-				response.sendRedirect("./index.jsp");
+				mensagem = "Preencha todos os campos para efetuar o cadastro.";
+				session.setAttribute("MENSAGEM", mensagem);
+				response.sendRedirect("./usuario.jsp");
 			}
 		} else {
-			mensagem = "Preencha todos os campos para efetuar o cadastro.";
-			session.setAttribute("MENSAGEM", mensagem);
-			response.sendRedirect("./usuario.jsp");
+			response.sendRedirect("./index.jsp");
 		}
 	}
 }

@@ -24,8 +24,6 @@
 				<div class="form-group">
 					<button type="submit" class="btn btn-dark btn-lg" name="cmd" value="Amigos">Amigos</button>
 					<button type="submit" class="btn btn-dark btn-lg" name="cmd" value="Objetos">Objetos</button>
-				</div>
-				<div class="form-group">
 					<button type="submit" class="btn btn-dark btn-lg" name="cmd" value="Categorias">Categorias</button>
 					<button type="submit" class="btn btn-dark btn-lg" name="cmd" value="Sair">Logoff</button>
 				</div>
