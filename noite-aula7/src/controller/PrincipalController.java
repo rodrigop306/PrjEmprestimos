@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.Amigos;
+import model.AmigosDAOImpl;
 import model.Categoria;
 import model.CategoriaDAOImpl;
 import model.Usuario;
@@ -30,31 +32,36 @@ public class PrincipalController extends HttpServlet {
 		String mensagem = "";
 		HttpSession session = request.getSession();
 		Usuario u = (Usuario) session.getAttribute("USUARIO");
-		if(u != null){
+		if (u != null) {
 			try {
-			if(acao.equals("Amigos")){
-				
-				response.sendRedirect("./amigos.jsp");
-			} else if(acao.equals("Objetos")){
-				//session.setAttribute("LISTA", null);
-				//session.setAttribute("MENSAGEM", null);
-				response.sendRedirect("./emprestimos.jsp");
-			} else if(acao.equals("Categorias")){
-				//session.setAttribute("LISTA", null);
-				//session.setAttribute("MENSAGEM", null);
-				response.sendRedirect("./categoria.jsp");
-			} else if(acao.equals("Sair")){
-				response.sendRedirect("./index.jsp");
-				//session.invalidate();
-			}
-			} catch(Throwable e){
+				if (acao.equals("Amigos")) {
+
+					response.sendRedirect("./amigos.jsp");
+				} else if (acao.equals("Objetos")) {
+					// session.setAttribute("LISTA", null);
+					// session.setAttribute("MENSAGEM", null);
+					AmigosDAOImpl amigo = new AmigosDAOImpl();
+					List<Amigos> lista = amigo.pesquisarAmigo("", u.getIdUsuario());
+					// session.setAttribute("LISTA", lista);
+
+					session.setAttribute("LISTAAMIGO", lista);
+					response.sendRedirect("./emprestimos.jsp");
+				} else if (acao.equals("Categorias")) {
+					// session.setAttribute("LISTA", null);
+					// session.setAttribute("MENSAGEM", null);
+					response.sendRedirect("./categoria.jsp");
+				} else if (acao.equals("Sair")) {
+					response.sendRedirect("./index.jsp");
+					// session.invalidate();
+				}
+			} catch (Throwable e) {
 				mensagem = "Não foi possível realizar a ação.";
 			}
 		} else {
 			mensagem = "Faça o login para acessar a página.";
 			response.sendRedirect("./index.jsp");
 		}
-		//session.setAttribute("MENSAGEM", mensagem);
-		//response.sendRedirect("./principal.jsp");
+		// session.setAttribute("MENSAGEM", mensagem);
+		// response.sendRedirect("./principal.jsp");
 	}
 }

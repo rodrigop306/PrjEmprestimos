@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="model.Emprestimos, model.CategoriaDAOImpl, model.Categoria, java.util.List, java.util.ArrayList"%>   
+<%@ page import="model.Emprestimos, model.Amigos, model.AmigosDAOImpl, model.CategoriaDAOImpl, model.Categoria, java.util.List, java.util.ArrayList"%>   
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -20,10 +20,17 @@
 		List<Emprestimos> lista = (List<Emprestimos>)session.getAttribute("LISTA");
 		CategoriaDAOImpl cat = new CategoriaDAOImpl();
 		List<Categoria> listaCat = cat.listaCategoria();
+		//AmigosDAOImpl amig = new AmigosDAOImpl();
+		List<Amigos> listaAmig = (List<Amigos>)session.getAttribute("LISTAAMIGO");
 	   if (lista == null) { 
 	   	   lista = new ArrayList<Emprestimos>();
 	   } else { 
 		   session.setAttribute("LISTA", null);
+	   }
+	   if (listaAmig == null) { 
+		   listaAmig = new ArrayList<Amigos>();
+	   } else { 
+		   session.setAttribute("LISTAAMIGO", null);
 	   }
 	   
 	   if (msg != null) {
@@ -52,7 +59,12 @@
   			</div>
   			<div class="form-group" id="Emprestei">
     			<label for="txtEmprestar" id = "Emprestimo">Emprestei para</label>
-    			<input type="text" class="form-control" id="txtEmprestar" name="txtEmprestar"/>
+    			
+    			<select class="form-control" id="amigo" name="amigo">
+      				<%for(Amigos a : listaAmig){ %>
+      					<option id="amigo" value="amigo" ><%= a.getNome() %></option>
+      				<% } %>
+				</select>
   			</div> 
   			  	
 			<div class="form-group">
@@ -85,7 +97,7 @@
 			</div>
 			<div class="form-group">
 				<button type="submit" class="btn btn-dark" name="cmd" value="adicionar">Adicionar</button>
-				<button type="submit" class="btn btn-dark" name="cmd" value="pesquisar">Pesquisar</button>
+				<button type="submit" class="btn btn-dark" name="cmd"  value="pesquisar">Pesquisar</button>
 			</div>																					
 		</div>
 		<script language="javascript">
