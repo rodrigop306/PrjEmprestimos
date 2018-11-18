@@ -120,8 +120,8 @@
 					<tr>
 						<td><%=e.getIdEmprestimos()%></td>
 						<td><%=e.getNomeObjeto()%></td>
-						<td><%=e.getIdAmigoDono()%></td>
-						<td><%=e.getIdAmigoEmprestimo()%></td>
+						<td><%=e.getNomeAmigo()%></td>
+						<td><%=e.getNomeCategoria()%></td>
 						<td><%=e.getDataEmprestimo()%></td>
 						<td><%=e.getDataDevolucao()%></td>						
 						<td><%=e.getStatus()%></td>

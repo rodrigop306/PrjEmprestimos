@@ -34,7 +34,10 @@ public class PrincipalController extends HttpServlet {
 		Usuario u = (Usuario) session.getAttribute("USUARIO");
 		if (u != null) {
 			try {
+				
 				if (acao.equals("Amigos")) {
+					session.setAttribute("MENSAGEM", null);
+					session.setAttribute("LISTA", null);
 					response.sendRedirect("./amigos.jsp");
 				} 
 				if (acao.equals("Objetos")) {

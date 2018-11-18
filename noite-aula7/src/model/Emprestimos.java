@@ -8,6 +8,8 @@ public class Emprestimos {
 	private int idAmigoDono;
 	private int idAmigoEmprestimo;
 	private int idCategoria;
+	private String nomeAmigo; 
+	private String nomeCategoria;
 	private String dataEmprestimo;
 	private String dataDevolucao;
 	private String status;
@@ -92,4 +94,22 @@ public class Emprestimos {
 	public void setIdCategoria(int idCategoria) {
 		this.idCategoria = idCategoria;
 	}
+	
+	public String getNomeAmigo() {
+		return nomeAmigo;
+	}
+
+	public void setNomeAmigo(String nomeAmigo) {
+		this.nomeAmigo = nomeAmigo;
+	}
+
+	public String getNomeCategoria() {
+		return nomeCategoria;
+	}
+
+	public void setNomeCategoria(String nomeCategoria) {
+		this.nomeCategoria = nomeCategoria;
+	}
+
+	
 }

@@ -77,6 +77,31 @@ public class EmprestimoController extends HttpServlet {
 						mensagem = "Empréstimo adicionado com sucesso.";
 						
 					//}
+				}else if (acao.equals("pesquisar")) {
+					emprestimo.setIdUsuario(usuario.getIdUsuario());
+					emprestimo.setNomeObjeto(request.getParameter("txtNomeObjeto"));
+					int idCategoria = Integer.parseInt(request.getParameter("txtCategoria"));
+					emprestimo.setIdCategoria(idCategoria);
+					emprestimo.setDataEmprestimo(request.getParameter("txtDataEmprestimo"));
+					emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
+					emprestimo.setStatus(request.getParameter("txtStatus"));
+					emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
+					//emprestimoController.adicionaEmprestimos(emprestimo);
+			//		List<Emprestimos> emp =null;
+					if (tipo.equals("pegarEmprestado")) {
+						int idAmigo = Integer.parseInt(request.getParameter("amigo"));
+						emprestimo.setIdAmigoDono(idAmigo);
+						//emp = emprestimoController.pesquisaEmprestimos(emprestimo.getNomeObjeto(),idCategoria,idAmigo,0, usuario.getIdUsuario());
+
+					} else if (tipo.equals("emprestar")) {
+						int idAmigo = Integer.parseInt(request.getParameter("amigo"));
+						System.out.println(request.getParameter("amigo"));
+						emprestimo.setIdAmigoEmprestimo(idAmigo);
+						//emp = emprestimoController.pesquisaEmprestimos(emprestimo.getNomeObjeto(),idCategoria, 0, idAmigo, usuario.getIdUsuario());
+
+					}
+					List<Emprestimos> emp = emprestimoController.pesquisaEmprestimos(emprestimo, usuario.getIdUsuario());
+					session.setAttribute("LISTA", emp);
 				}
 			} catch (Throwable e) {
 				mensagem = "Não foi possível adicionar o empréstimo.";

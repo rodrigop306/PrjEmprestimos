@@ -21,8 +21,8 @@ public class EmprestimosDAOImpl implements EmprestimosDAO {
 			if (emprestimos.getIdAmigoDono() != 0) {
 				ps = con.prepareStatement(
 						"INSERT INTO EMPRESTIMOS (IDEMPRESTIMOS, IDUSUARIO, NOMEOBJETO, IDAMIGODONO, DATAEMPRESTIMO, "
-								+ "DATADEVOLUCAO, STATUS, DETALHESEMPRESTIMOS) "
-								+ "VALUES (SEQUENCIA_PK_EMPRESTIMOS.nextVal,?,?,?,?,?,?,?)");
+								+ "DATADEVOLUCAO, STATUS, DETALHESEMPRESTIMOS, IDCATEGORIA) "
+								+ "VALUES (SEQUENCIA_PK_EMPRESTIMOS.nextVal,?,?,?,?,?,?,?,?)");
 				int i = 0;
 				ps.setInt(++i, emprestimos.getIdUsuario());
 				ps.setString(++i, emprestimos.getNomeObjeto());
@@ -31,13 +31,14 @@ public class EmprestimosDAOImpl implements EmprestimosDAO {
 				ps.setString(++i, emprestimos.getDataDevolucao());
 				ps.setString(++i, emprestimos.getStatus());
 				ps.setString(++i, emprestimos.getDetalhesEmprestimo());
+				ps.setInt(++i, emprestimos.getIdCategoria());
 				ps.executeUpdate();
 				ps.close();
 			}else if(emprestimos.getIdAmigoEmprestimo() != 0){
 				ps = con.prepareStatement(
 						"INSERT INTO EMPRESTIMOS (IDEMPRESTIMOS, IDUSUARIO, NOMEOBJETO, IDAMIGOEMPRESTIMO, DATAEMPRESTIMO, "
-								+ "DATADEVOLUCAO, STATUS, DETALHESEMPRESTIMOS) "
-								+ "VALUES (SEQUENCIA_PK_EMPRESTIMOS.nextVal,?,?,?,?,?,?,?)");
+								+ "DATADEVOLUCAO, STATUS, DETALHESEMPRESTIMOS, IDCATEGORIA) "
+								+ "VALUES (SEQUENCIA_PK_EMPRESTIMOS.nextVal,?,?,?,?,?,?,?,?)");
 				int i = 0;
 				ps.setInt(++i, emprestimos.getIdUsuario());
 				ps.setString(++i, emprestimos.getNomeObjeto());
@@ -46,6 +47,7 @@ public class EmprestimosDAOImpl implements EmprestimosDAO {
 				ps.setString(++i, emprestimos.getDataDevolucao());
 				ps.setString(++i, emprestimos.getStatus());
 				ps.setString(++i, emprestimos.getDetalhesEmprestimo());
+				ps.setInt(++i, emprestimos.getIdCategoria());
 				ps.executeUpdate();
 				ps.close();
 			}
@@ -55,37 +57,71 @@ public class EmprestimosDAOImpl implements EmprestimosDAO {
 		con = c.fechar();
 	}
 
-	public List<Emprestimos> pesquisaEmprestimos(String dataDe, String dataAte) {
+	public List<Emprestimos> pesquisaEmprestimos(Emprestimos e, int idUsuario) {
 		Conexao c = new Conexao();
 		con = c.abrir();
 		PreparedStatement ps;
 		List<Emprestimos> listaEmprestimos = null;
 		try {
-			ps = con.prepareStatement(
-					"SELECT IDEMPRESTIMOS, IDUSUARIO, NOMEOBJETO, IDAMIGOEMPRESTIMO, IDAMIGODONO, DATAEMPRESTIMO, "
-							+ "DATADEVOLUCAO, STATUS, DETALHESEMPRESTIMOS FROM EMPRESTIMOS "
-							+ "WHERE DATAEMPRESTIMO BETWEEN ? AND ? ");
-			ps.setString(1, dataDe);
-			ps.setString(1, dataAte);
+			if (e.getIdAmigoDono()!= 0) {
+			ps = con.prepareStatement("SELECT e.idusuario, e.idemprestimos, e.nomeobjeto, c.idcategoria, c.tipo, a.nome, a.idamigo, e.dataemprestimo, e.datadevolucao, e.status, e.detalhesemprestimos FROM EMPRESTIMOS e, AMIGOS a, CATEGORIA c WHERE e.idamigodono = a.idamigo " + 
+					"AND e.idcategoria = c.idcategoria AND e.idUsuario = ? AND e.nomeobjeto LIKE ? AND a.idamigo = ?");
+//			ps.setString(1, "%"+nome+"%");
+//			ps.setInt(2, idCat);
+//			ps.setInt(3, idDono);
+			ps.setInt(1, idUsuario);
+			ps.setString(2,"%"+e.getNomeObjeto()+"%");
+			ps.setInt(3, e.getIdAmigoDono());
 			ResultSet rs = ps.executeQuery();
 			listaEmprestimos = new ArrayList<>();
 			while (rs.next()) {
-				Emprestimos e = new Emprestimos();
-				e.setIdEmprestimos(rs.getInt("IDEMPRESTIMOS"));
-				e.setIdUsuario(rs.getInt("IDUSUARIO"));
-				e.setNomeObjeto(rs.getString("NOMEOBJETO"));
-				e.setIdAmigoEmprestimo(rs.getInt("IDAMIGOEMPRESTIMO"));
-				e.setIdAmigoEmprestimo(rs.getInt("IDAMIGODONO"));
-				e.setDataEmprestimo(rs.getString("DATAEMPRESTIMO"));
-				e.setDataDevolucao(rs.getString("DATADEVOLUCAO"));
-				e.setStatus(rs.getString("STATUS"));
-				e.setDetalhesEmprestimo(rs.getString("DETALHESEMPRESTIMOS"));
-				listaEmprestimos.add(e);
+				Emprestimos e1 = new Emprestimos();
+				e1.setIdEmprestimos(rs.getInt("idemprestimos"));
+				e1.setIdUsuario(rs.getInt("idusuario"));
+				e1.setNomeObjeto(rs.getString("nomeobjeto"));
+				e1.setIdCategoria(rs.getInt("idcategoria"));
+				e1.setNomeCategoria(rs.getString("tipo"));
+				e1.setIdAmigoDono(rs.getInt("idamigo"));
+				e1.setNomeAmigo(rs.getString("nome"));
+				e1.setDataEmprestimo(rs.getString("dataemprestimo"));
+				e1.setDataDevolucao(rs.getString("datadevolucao"));
+				e1.setStatus(rs.getString("status"));
+				e1.setDetalhesEmprestimo(rs.getString("detalhesemprestimos"));
+				listaEmprestimos.add(e1);
 			}
 			rs.close();
 			ps.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+			}else if(e.getIdAmigoEmprestimo() != 0){
+				ps = con.prepareStatement("SELECT e.idusuario, e.idemprestimos, e.nomeobjeto, c.idcategoria, c.tipo, a.nome, a.idamigo, e.dataemprestimo, e.datadevolucao, e.status, e.detalhesemprestimos FROM EMPRESTIMOS e, AMIGOS a, CATEGORIA c WHERE e.IDAMIGOEMPRESTIMO = a.idamigo " + 
+						"AND e.idcategoria = c.idcategoria AND e.idUsuario = ? AND e.nomeobjeto LIKE ? AND a.idamigo = ?");
+//				ps.setString(1, "%"+nome+"%");
+//				ps.setInt(2, idCat);
+//				ps.setInt(3, amigoEmp);
+				ps.setInt(1, idUsuario);
+				ps.setString(2,"%"+e.getNomeObjeto()+"%");
+				ps.setInt(3, e.getIdAmigoEmprestimo());
+				ResultSet rs = ps.executeQuery();
+				listaEmprestimos = new ArrayList<>();
+				while (rs.next()) {
+					Emprestimos e1 = new Emprestimos();
+					e1.setIdEmprestimos(rs.getInt("idemprestimos"));
+					e1.setIdUsuario(rs.getInt("idusuario"));
+					e1.setNomeObjeto(rs.getString("nomeobjeto"));
+					e1.setIdCategoria(rs.getInt("idcategoria"));
+					e1.setNomeCategoria(rs.getString("tipo"));
+					e1.setIdAmigoEmprestimo(rs.getInt("idamigo"));
+					e1.setNomeAmigo(rs.getString("nome"));
+					e1.setDataEmprestimo(rs.getString("dataemprestimo"));
+					e1.setDataDevolucao(rs.getString("datadevolucao"));
+					e1.setStatus(rs.getString("status"));
+					e1.setDetalhesEmprestimo(rs.getString("detalhesemprestimos"));
+					listaEmprestimos.add(e1);
+				}
+				rs.close();
+				ps.close();
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
 			return null;
 		}
 		con = c.fechar();
