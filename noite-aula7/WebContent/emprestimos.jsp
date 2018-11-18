@@ -12,6 +12,17 @@
 	<script src="https://code.jquery.com/jquery-1.8.2.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+	<script>
+	function remover( id ) {
+		if (confirm("Remove o sorvete com id " + id)) {
+			$('#formEmprestimo').empty();
+			$('#formEmprestimo').append('<input type="hidden" name="txtId" value="' + id + '"/>');
+			$('#formEmprestimo').append('<input type="hidden" name="cmd" value="remover"/>');
+			$('#formEmprestimo').submit();
+		}
+	}
+	</script>
+
 </head>
 <body>
 	<h2 align='Center'>Emprestimos</h2>

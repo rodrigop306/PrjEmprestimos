@@ -151,5 +151,22 @@ public class EmprestimosDAOImpl implements EmprestimosDAO {
 		}
 		con = c.fechar();
 	}
+	
+	public boolean removeEmprestimo(int idEmp) {
+		Conexao c = new Conexao();
+		con = c.abrir();
+		PreparedStatement ps;
+		try {
+			ps = con.prepareStatement("DELETE FROM EMPRESTIMOS WHERE IDEMPRESTIMOS = ? ");
+			ps.setInt(1, idEmp);
+			ps.execute();
+			ps.close();
+			return true;
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		con = c.fechar();
+		return false;
+	}
 
 }

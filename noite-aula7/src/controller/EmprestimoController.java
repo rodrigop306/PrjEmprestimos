@@ -14,6 +14,7 @@ import model.CategoriaDAOImpl;
 import model.Amigos;
 import model.Emprestimos;
 import model.AmigosDAOImpl;
+import model.Categoria;
 import model.EmprestimosDAOImpl;
 import model.Usuario;
 import model.AmigosDAOImpl;
@@ -86,22 +87,22 @@ public class EmprestimoController extends HttpServlet {
 					emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
 					emprestimo.setStatus(request.getParameter("txtStatus"));
 					emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
-					//emprestimoController.adicionaEmprestimos(emprestimo);
-			//		List<Emprestimos> emp =null;
 					if (tipo.equals("pegarEmprestado")) {
 						int idAmigo = Integer.parseInt(request.getParameter("amigo"));
 						emprestimo.setIdAmigoDono(idAmigo);
-						//emp = emprestimoController.pesquisaEmprestimos(emprestimo.getNomeObjeto(),idCategoria,idAmigo,0, usuario.getIdUsuario());
-
 					} else if (tipo.equals("emprestar")) {
 						int idAmigo = Integer.parseInt(request.getParameter("amigo"));
 						System.out.println(request.getParameter("amigo"));
 						emprestimo.setIdAmigoEmprestimo(idAmigo);
-						//emp = emprestimoController.pesquisaEmprestimos(emprestimo.getNomeObjeto(),idCategoria, 0, idAmigo, usuario.getIdUsuario());
-
 					}
 					List<Emprestimos> emp = emprestimoController.pesquisaEmprestimos(emprestimo, usuario.getIdUsuario());
 					session.setAttribute("LISTA", emp);
+				}else if ("remover".equals(acao)) {
+					String idEmp = request.getParameter("txtId");
+					emprestimoController.removeEmprestimo(Integer.parseInt(idEmp));
+					mensagem = "Categoria com o Id " + idEmp + " foi removido";
+					//List<Categoria> lista = categoriaDAO.pesquisaCategoria("");
+					//session.setAttribute("LISTA", lista);
 				}
 			} catch (Throwable e) {
 				mensagem = "Não foi possível adicionar o empréstimo.";
