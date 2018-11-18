@@ -52,6 +52,30 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 		con = c.fechar();
 		return listaCategoria;
 	}
+	
+	public int pesquisaExataCategoria(String tipo) {
+		Conexao c = new Conexao();
+		con = c.abrir();
+		Categoria listaCategoria = null;
+		PreparedStatement ps;
+		try {
+			ps = con.prepareStatement("SELECT IDCATEGORIA, TIPO FROM CATEGORIA WHERE TIPO LIKE '"+tipo+"' ");
+			ResultSet rs = ps.executeQuery();
+			//listaCategoria = new ArrayList<>();
+			while(rs.next()) {
+				Categoria categoria = new Categoria();
+				categoria.setId(rs.getInt("IDCATEGORIA"));
+				categoria.setTipo(rs.getString("TIPO"));
+				listaCategoria=categoria;
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		con = c.fechar();
+		return listaCategoria.getId();
+	}
 
 	public List<Categoria> listaCategoria() {
 		Conexao c = new Conexao();

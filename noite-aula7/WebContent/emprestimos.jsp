@@ -62,7 +62,7 @@
     			
     			<select class="form-control" id="amigo" name="amigo">
       				<%for(Amigos a : listaAmig){ %>
-      					<option id="amigo" value="amigo" ><%= a.getNome() %></option>
+      					<option value="<%=a.getIdAmigo()%>" ><%= a.getNome() %></option>
       				<% } %>
 				</select>
   			</div> 
@@ -71,7 +71,7 @@
     			<label for="txtCategoria">Categoria</label>
     			<select class="form-control" id="txtCategoria" name="txtCategoria">
       				<%for(Categoria c : listaCat){ %>
-      					<option value="categoria"><%= c.getTipo() %></option>
+      					<option value="<%=c.getId()%>"><%= c.getTipo() %></option>
       				<% } %>
 				</select>
 			</div>

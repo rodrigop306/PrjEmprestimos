@@ -7,6 +7,7 @@ public class Emprestimos {
 	private String nomeObjeto;
 	private int idAmigoDono;
 	private int idAmigoEmprestimo;
+	private int idCategoria;
 	private String dataEmprestimo;
 	private String dataDevolucao;
 	private String status;
@@ -84,4 +85,11 @@ public class Emprestimos {
 		this.detalhesEmprestimo = detalhesEmprestimo;
 	}
 
+	public int getIdCategoria() {
+		return idCategoria;
+	}
+
+	public void setIdCategoria(int idCategoria) {
+		this.idCategoria = idCategoria;
+	}
 }

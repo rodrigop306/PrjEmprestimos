@@ -59,6 +59,34 @@ public class AmigosDAOImpl implements AmigosDAO{
 		con = c.fechar();
 		return null;
 	}
+	
+	public int pesquisaExataAmigo(String nome, int idUsuario) {
+		Conexao c = new Conexao();
+		con = c.abrir();
+		PreparedStatement ps;
+		Amigos listaAmigos = new Amigos();
+		try {
+			ps = con.prepareStatement("SELECT A.IDAMIGO, A.IDUSUARIO, A.NOME, A.EMAIL, A.TELEFONE FROM AMIGOS A INNER JOIN USUARIO U ON U.IDUSUARIO = A.IDUSUARIO WHERE A.NOME LIKE '"+nome+"' AND A.IDUSUARIO = ? ");
+			ps.setInt(1, idUsuario);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				Amigos a = new Amigos();
+				a.setIdAmigo(rs.getInt("IDAMIGO"));
+				a.setIdUsuario(rs.getInt("IDUSUARIO"));
+				a.setNome(rs.getString("NOME"));
+				a.setEmail(rs.getString("EMAIL"));
+				a.setTelefone(rs.getString("TELEFONE"));
+				listaAmigos=a;
+			}
+			rs.close();
+			ps.close();
+			return listaAmigos.getIdAmigo();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		con = c.fechar();
+		return 0;
+	}
 
 	public void removeAmigo(int id) {
 		Conexao c = new Conexao();

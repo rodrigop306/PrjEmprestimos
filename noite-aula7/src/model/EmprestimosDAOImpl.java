@@ -33,7 +33,7 @@ public class EmprestimosDAOImpl implements EmprestimosDAO {
 				ps.setString(++i, emprestimos.getDetalhesEmprestimo());
 				ps.executeUpdate();
 				ps.close();
-			}else {
+			}else if(emprestimos.getIdAmigoEmprestimo() != 0){
 				ps = con.prepareStatement(
 						"INSERT INTO EMPRESTIMOS (IDEMPRESTIMOS, IDUSUARIO, NOMEOBJETO, IDAMIGOEMPRESTIMO, DATAEMPRESTIMO, "
 								+ "DATADEVOLUCAO, STATUS, DETALHESEMPRESTIMOS) "
