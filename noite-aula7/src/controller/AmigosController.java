@@ -33,6 +33,12 @@ public class AmigosController extends HttpServlet {
 		Usuario usuario = (Usuario) session.getAttribute("USUARIO");
 		if (usuario != null) {
 			try {
+				if(acao.equals("emprestimos")){
+					response.sendRedirect("./emprestimos.jsp");
+				}
+				if(acao.equals("categorias")){
+					response.sendRedirect("./categoria.jsp");
+				}
 				if(acao.equals("adicionar")){
 					Amigos amigos = new Amigos();
 					amigos.setIdUsuario(usuario.getIdUsuario());

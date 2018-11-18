@@ -23,7 +23,7 @@
 			<div class="container" align='Center'>	
 				<div class="form-group">
 					<button type="submit" class="btn btn-dark btn-lg" name="cmd" value="Amigos">Amigos</button>
-					<button type="submit" class="btn btn-dark btn-lg" name="cmd" value="Objetos">Objetos</button>
+					<button type="submit" class="btn btn-dark btn-lg" name="cmd" value="Objetos">Empréstimos</button>
 					<button type="submit" class="btn btn-dark btn-lg" name="cmd" value="Categorias">Categorias</button>
 					<button type="submit" class="btn btn-dark btn-lg" name="cmd" value="Sair">Logoff</button>
 				</div>

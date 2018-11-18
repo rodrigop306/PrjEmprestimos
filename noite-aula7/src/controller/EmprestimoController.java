@@ -48,6 +48,12 @@ public class EmprestimoController extends HttpServlet {
 
 			// if(a != null){
 			try {
+				if(acao.equals("amigos")){
+					response.sendRedirect("./amigos.jsp");
+				}
+				if(acao.equals("categorias")){
+					response.sendRedirect("./categoria.jsp");
+				}
 				if (acao.equals("adicionar")) {
 					//if (tipo.equals("pegarEmprestado") || tipo.equals("Emprestar")) {
 						emprestimo.setIdUsuario(usuario.getIdUsuario());

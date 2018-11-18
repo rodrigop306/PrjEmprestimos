@@ -34,6 +34,12 @@ public class CategoriaController extends HttpServlet {
 		Usuario u = (Usuario) session.getAttribute("USUARIO");
 		if (u != null) {
 			try {
+				if(acao.equals("amigos")){
+					response.sendRedirect("./amigos.jsp");
+				}
+				if(acao.equals("emprestimos")){
+					response.sendRedirect("./emprestimos.jsp");
+				}
 				if (acao.equals("adicionar")) {
 					Categoria c = new Categoria();
 					c.setTipo(request.getParameter("txtTipo"));

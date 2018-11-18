@@ -28,12 +28,21 @@ public class UsuarioController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String mensagem = "";
-		String cmd = request.getParameter("cmd");
+		String acao = request.getParameter("cmd");
 		String txtLogin = (request.getParameter("txtLogin"));
 		String txtNome = (request.getParameter("txtNome"));
 		String txtSenha = (request.getParameter("txtSenha"));
 		HttpSession session = request.getSession();
-		if (cmd.equals("adicionar")) {
+		if(acao.equals("amigos")){
+			response.sendRedirect("./amigos.jsp");
+		}
+		if(acao.equals("emprestimos")){
+			response.sendRedirect("./emprestimos.jsp");
+		}
+		if(acao.equals("categorias")){
+			response.sendRedirect("./categoria.jsp");
+		}
+		if (acao.equals("adicionar")) {
 			if((!txtLogin.trim().equals("") && txtLogin != null)
 					&& (!txtNome.trim().equals("") && txtNome != null)
 					&& (!txtSenha.trim().equals("") && txtSenha != null)){
@@ -48,10 +57,10 @@ public class UsuarioController extends HttpServlet {
 						usuario.setSenha(request.getParameter("txtSenha"));
 						usuario.setDataCadastro(dateFormat.format(date));
 						usuarioController.adicionaUsuario(usuario);
-						mensagem = "Seu cadastro foi realizado com sucesso!";
+						mensagem = "Seu cadastro foi realizado com sucesso! Bem vindo, "+usuario.getNome()+"!";
 						response.sendRedirect("./emprestimos.jsp");
 					} else {
-						mensagem = "Login já cadastrado no sistema. Por favor, digite outro";
+						mensagem = "Login já cadastrado no sistema. Por favor, digite outro.";
 						response.sendRedirect("./usuario.jsp");
 					}
 				} catch(Throwable e){
@@ -63,7 +72,8 @@ public class UsuarioController extends HttpServlet {
 				session.setAttribute("MENSAGEM", mensagem);
 				response.sendRedirect("./usuario.jsp");
 			}
-		} else {
+		}
+		if(acao.equals("voltar")){
 			response.sendRedirect("./index.jsp");
 		}
 	}
