@@ -72,8 +72,7 @@ public class UsuarioController extends HttpServlet {
 				session.setAttribute("MENSAGEM", mensagem);
 				response.sendRedirect("./usuario.jsp");
 			}
-		}
-		if(acao.equals("voltar")){
+		}else if(acao.equals("voltar")){
 			response.sendRedirect("./index.jsp");
 		}
 	}

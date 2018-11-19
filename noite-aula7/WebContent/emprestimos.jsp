@@ -21,6 +21,12 @@
 			$('#formEmprestimo').submit();
 		}
 	}
+	function editar( id ) {
+		$('#formEmprestimo').empty();
+		$('#formEmprestimo').append('<input type="hidden" name="txtId" value="' + id + '"/>');
+		$('#formEmprestimo').append('<input type="hidden" name="cmd" value="editar"/>');
+		$('#formEmprestimo').submit();
+	}	
 	</script>
 
 </head>
@@ -28,10 +34,9 @@
 	<h2 align='Center'>Emprestimos</h2>
 	
 	<%  String msg = (String)session.getAttribute("MENSAGEM");
+		int idamigo=0;
 		List<Emprestimos> lista = (List<Emprestimos>)session.getAttribute("LISTA");
-		CategoriaDAOImpl cat = new CategoriaDAOImpl();
-		List<Categoria> listaCat = cat.listaCategoria();
-		//AmigosDAOImpl amig = new AmigosDAOImpl();
+		List<Categoria> listaCat = (List<Categoria>)session.getAttribute("LISTACAT");
 		List<Amigos> listaAmig = (List<Amigos>)session.getAttribute("LISTAAMIGO");
 	   if (lista == null) { 
 	   	   lista = new ArrayList<Emprestimos>();
@@ -43,6 +48,20 @@
 	   } else { 
 		   session.setAttribute("LISTAAMIGO", null);
 	   }
+	   if (listaCat == null) { 
+		   listaCat = new ArrayList<Categoria>();
+	   } else { 
+		   session.setAttribute("LISTACAT", null);
+	   }
+	   
+	   
+	   Emprestimos emprestimoAtual = (Emprestimos)session.getAttribute("EMP_ATUAL");
+	   if (emprestimoAtual == null) { 
+		   emprestimoAtual  = new Emprestimos();
+	   } else { 
+		   session.setAttribute("EMP_ATUAL", null);
+	   }
+	   
 	   
 	   if (msg != null) {
 		   session.setAttribute("MENSAGEM", null);
@@ -54,19 +73,31 @@
 	<form id="formEmprestimo" action="./EmprestimoController" method="post">
 		<div class="container">
 			<div class="form-group">
+			<%if(emprestimoAtual.getIdEmprestimos()==0){ %>
     			<label for="txtAcao">Ação</label>
     			<select class="form-control" id="txtAcao" name="txtAcao">
       				<option value="emprestar">Emprestar</option>
       				<option value="pegarEmprestado">Pegar emprestado</option>
 				</select>
+			<%}else if(emprestimoAtual.getIdAmigoDono()!=0){ %>
+				<label for="txtAcao">Ação</label>
+    			<select class="form-control" id="txtAcao" name="txtAcao" readonly>
+      				<option value="pegarEmprestado">Pegar emprestado</option>
+				</select>
+			<%}else{ %>
+				<label for="txtAcao">Ação</label>
+    			<select class="form-control" id="txtAcao" name="txtAcao" readonly>
+      				<option value="emprestar">Emprestar</option>
+				</select>
+			<%} %>
 			</div>	
 			<div class="form-group">
     			<label for="txtId">Id</label>
-    			<input type="text" class="form-control" id="txtId" name="txtId" readonly/>
+    			<input type="text" class="form-control" id="txtId" name="txtId" value="<%=emprestimoAtual.getIdEmprestimos()%>" readonly/>
   			</div>
 			<div class="form-group">
     			<label for="txtNomeObjeto">Nome do Objeto</label>
-    			<input type="text" class="form-control" id="txtNomeObjeto" name="txtNomeObjeto"/>
+    			<input type="text" class="form-control" id="txtNomeObjeto" name="txtNomeObjeto" value="<%=emprestimoAtual.getNomeObjeto()%>"/>
   			</div>
   			<div class="form-group" id="Emprestei">
     			<label for="txtEmprestar" id = "Emprestimo">Emprestei para</label>
@@ -88,11 +119,11 @@
 			</div>
 			<div class="form-group">
     			<label for="txtDataEmprestimo">Data de emprestimo</label>
-    			<input type="text" class="form-control" id="txtDataEmprestimo" name="txtDataEmprestimo"/>
+    			<input type="text" class="form-control" id="txtDataEmprestimo" name="txtDataEmprestimo" value="<%=emprestimoAtual.getDataEmprestimo() %>"/>
   			</div>  
   			<div class="form-group">
     			<label for="txtDataDevolucao">Data de devolução</label>
-    			<input type="text" class="form-control" id="txtDataDevolucao" name="txtDataDevolucao"/>
+    			<input type="text" class="form-control" id="txtDataDevolucao" name="txtDataDevolucao" value="<%=emprestimoAtual.getDataDevolucao() %>"/>
   			</div>  
   			<div class="form-group">
     			<label for="txtStatus">Status</label>
@@ -104,12 +135,17 @@
 			</div>
 			<div class="form-group">
     			<label for="txtDetalhes">Detalhes</label>
-    			<input type="text" class="form-control" id="txtDetalhes" name="txtDetalhes"/>
+    			<input type="text" class="form-control" id="txtDetalhes" name="txtDetalhes" value="<%=emprestimoAtual.getDetalhesEmprestimo() %>"/>
 			</div>
 			<div class="form-group">
-				<button type="submit" class="btn btn-dark" name="cmd" value="adicionar">Adicionar</button>
-				<button type="submit" class="btn btn-dark" name="cmd"  value="pesquisar">Pesquisar</button>
-			</div>																					
+				<%if (emprestimoAtual.getIdEmprestimos() == 0) { %>
+					<button type="submit" class="btn btn-dark" name="cmd" value="adicionar">Adicionar</button>
+				<%} else { %>
+					<button type="submit" class="btn btn-dark" name="cmd" value="salvar">Salvar</button>
+				<%} %>
+				<button type="submit" class="btn btn-dark" name="cmd" value="pesquisar">Pesquisar</button>
+				<button type="submit" class="btn btn-dark" name="cmd" value="voltar">Voltar</button>
+		</div> 																							
 		</div>
 		<script language="javascript">
 			var acao = document.getElementById('txtAcao');
@@ -150,6 +186,18 @@
 		</div>
 
 	</form>
-
+	<%
+	if(emprestimoAtual.getIdAmigoDono()!=0){
+		idamigo = emprestimoAtual.getIdAmigoDono();
+	}else if(emprestimoAtual.getIdAmigoEmprestimo()!=0){
+		idamigo = emprestimoAtual.getIdAmigoEmprestimo();
+	}
+	%>
+	<script>
+		$('#txtStatus').val("<%=emprestimoAtual.getStatus()%>");
+		$('#txtCategoria').val("<%=emprestimoAtual.getIdCategoria()%>");
+		$('#amigo').val("<%=idamigo%>");
+		
+	</script>
 </body>
 </html>

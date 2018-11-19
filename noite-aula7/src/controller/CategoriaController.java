@@ -69,25 +69,18 @@ public class CategoriaController extends HttpServlet {
 					c.setId(Integer.parseInt(request.getParameter("txtId")));
 					c.setTipo(request.getParameter("txtTipo"));
 					categoriaDAO.editarCategoria(c);
-					mensagem = "Categoria atualizada com sucesso";
+					
 					List<Categoria> lista = categoriaDAO.pesquisaCategoria("");
 					session.setAttribute("LISTA", lista);
-					mensagem = "Sorvete foi atualizado com sucesso";
-					
-					/*Sorvete s = new Sorvete();
-					String id = request.getParameter("txtId");
-					s.setSabor(request.getParameter("txtSabor"));
-					s.setPreco(Float.parseFloat(request.getParameter("txtPreco")));
-					s.setTipo(request.getParameter("txtTipo"));
-					s.setCobertura(request.getParameter("txtCobertura"));
-					s.setImagem(request.getParameter("txtImagem"));
-					sDao.salvar( Long.parseLong(id), s );
-					List<Sorvete> lista = sDao.presquisarPorSabor("");
-					session.setAttribute("LISTA", lista);				
-					msg = "Sorvete foi atualizado com sucesso";*/
+					mensagem = "Categoria atualizada com sucesso";
+				}else if(acao.equals("voltar")){
+					//response.sendRedirect("./principal.jsp");
+					session.setAttribute("LISTA", null);
 				}
 			} catch (Throwable e) {
 				mensagem = "Não foi possível realizar a ação.";
+				
+				//response.sendRedirect("./categoria.jsp");
 			}
 		} else {
 			mensagem = "Faça o login para adicionar categorias.";

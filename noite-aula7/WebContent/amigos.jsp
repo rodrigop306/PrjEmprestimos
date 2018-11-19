@@ -77,6 +77,7 @@
 				<button type="submit" class="btn btn-dark" name="cmd" value="salvar">Salvar</button>
 				<%}%>
 				<button type="submit" class="btn btn-dark" name="cmd" value="pesquisar">Pesquisar</button>
+				<button type="submit" class="btn btn-dark" name="cmd" value="voltar">Voltar</button>
 			</div>																	
 		</div>
 		<div class="container">

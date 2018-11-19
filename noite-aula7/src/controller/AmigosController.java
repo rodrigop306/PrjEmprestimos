@@ -78,9 +78,13 @@ public class AmigosController extends HttpServlet {
 					List<Amigos> lista = amigosController.pesquisarAmigo("", usuario.getIdUsuario());
 					session.setAttribute("LISTA", lista);
 					mensagem = "Amigo atualizada com sucesso";
+				}else if(acao.equals("voltar")){
+					//response.sendRedirect("./principal.jsp");
+					session.setAttribute("LISTA", null);
 				} 
 			}catch(Throwable e){
 				mensagem = "Não foi possível realizar a ação.";
+				//response.sendRedirect("./amigos.jsp");
 			}
 			session.setAttribute("MENSAGEM", mensagem);
 			response.sendRedirect("./amigos.jsp");

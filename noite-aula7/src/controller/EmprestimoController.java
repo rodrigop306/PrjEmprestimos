@@ -103,20 +103,51 @@ public class EmprestimoController extends HttpServlet {
 					mensagem = "Categoria com o Id " + idEmp + " foi removido";
 					//List<Categoria> lista = categoriaDAO.pesquisaCategoria("");
 					//session.setAttribute("LISTA", lista);
+				}else if ("editar".equals(acao)) {
+					String id = request.getParameter("txtId");
+					// Categoria s = sDao.pesquisarPorId(Long.parseLong(id));
+					emprestimo = emprestimoController.pesquisaPorId(Integer.parseInt(id));
+					session.setAttribute("EMP_ATUAL", emprestimo);
+					mensagem = "Detalhes da categoria com o Id " + id;
+				} else if ("salvar".equals(acao)) {
+					emprestimo = new Emprestimos();
+					emprestimo.setIdUsuario(usuario.getIdUsuario());
+					emprestimo.setIdEmprestimos(Integer.parseInt(request.getParameter("txtId")));
+					emprestimo.setNomeObjeto(request.getParameter("txtNomeObjeto"));
+					int idCategoria = Integer.parseInt(request.getParameter("txtCategoria"));
+					emprestimo.setIdCategoria(idCategoria);
+					emprestimo.setDataEmprestimo(request.getParameter("txtDataEmprestimo"));
+					emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
+					emprestimo.setStatus(request.getParameter("txtStatus"));
+					emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
+					//emprestimoController.adicionaEmprestimos(emprestimo);
+					if (tipo.equals("pegarEmprestado")) {
+						int idAmigo = Integer.parseInt(request.getParameter("amigo"));
+						emprestimo.setIdAmigoDono(idAmigo);
+					} else if (tipo.equals("emprestar")) {
+						int idAmigo = Integer.parseInt(request.getParameter("amigo"));
+						System.out.println(request.getParameter("amigo"));
+						emprestimo.setIdAmigoEmprestimo(idAmigo);
+					}
+					emprestimoController.atualizaEmprestimo(emprestimo);
+					mensagem = "Emprestimo atualizado com sucesso";
+					
+				}else if(acao.equals("voltar")){
+					//response.sendRedirect("./principal.jsp");
+					session.setAttribute("LISTA", null);
 				}
 			} catch (Throwable e) {
-				mensagem = "Não foi possível adicionar o empréstimo.";
+				mensagem = "A ação não pôde ser concluída";
+				//response.sendRedirect("./emprestimos.jsp");
 				System.out.println(e);
 			}
-//			} else {
-//				mensagem = "Nenhum amigo selecionado.";
-//			}
-			session.setAttribute("MENSAGEM", mensagem);
+			//session.setAttribute("MENSAGEM", mensagem);
 			AmigosDAOImpl amigo = new AmigosDAOImpl();
 			List<Amigos> lista = amigo.pesquisarAmigo("", usuario.getIdUsuario());
-			// session.setAttribute("LISTA", lista);
-
 			session.setAttribute("LISTAAMIGO", lista);
+			CategoriaDAOImpl cat = new CategoriaDAOImpl();
+			List<Categoria> listaCat = cat.listaCategoria();
+			session.setAttribute("LISTACAT", listaCat);
 			response.sendRedirect("./emprestimos.jsp");
 		} else {
 			mensagem = "Faça login para registrar o empréstimo.";

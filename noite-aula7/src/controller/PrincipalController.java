@@ -44,6 +44,11 @@ public class PrincipalController extends HttpServlet {
 					AmigosDAOImpl amigo = new AmigosDAOImpl();
 					List<Amigos> lista = amigo.pesquisarAmigo("", u.getIdUsuario());
 					session.setAttribute("LISTAAMIGO", lista);
+					
+					CategoriaDAOImpl cat = new CategoriaDAOImpl();
+					List<Categoria> listaCat = cat.listaCategoria();
+					session.setAttribute("LISTACAT", listaCat);
+					
 					response.sendRedirect("./emprestimos.jsp");
 				} 
 				if (acao.equals("Categorias")) {
@@ -61,6 +66,6 @@ public class PrincipalController extends HttpServlet {
 			mensagem = "Faça o login para acessar a página.";
 			response.sendRedirect("./index.jsp");
 		}
-		session.setAttribute("MENSAGEM", mensagem);
+		//session.setAttribute("MENSAGEM", mensagem);
 	}
 }

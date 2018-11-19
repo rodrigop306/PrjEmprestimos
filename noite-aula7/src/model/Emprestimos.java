@@ -2,18 +2,18 @@ package model;
 
 public class Emprestimos {
 
-	private int idUsuario;
-	private int idEmprestimos;
-	private String nomeObjeto;
-	private int idAmigoDono;
-	private int idAmigoEmprestimo;
-	private int idCategoria;
-	private String nomeAmigo; 
-	private String nomeCategoria;
-	private String dataEmprestimo;
-	private String dataDevolucao;
-	private String status;
-	private String detalhesEmprestimo;
+	private int idUsuario=0;
+	private int idEmprestimos=0;
+	private String nomeObjeto="";
+	private int idAmigoDono=0;
+	private int idAmigoEmprestimo=0;
+	private int idCategoria=0;
+	private String nomeAmigo=""; 
+	private String nomeCategoria="";
+	private String dataEmprestimo="";
+	private String dataDevolucao="";
+	private String status="";
+	private String detalhesEmprestimo="";
 
 	public int getIdUsuario() {
 		return idUsuario;
