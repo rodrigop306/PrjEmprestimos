@@ -11,7 +11,7 @@
 	<script src="./js/jquery-3.3.1.min.js"></script>
 	<script>
 		function remover( id ) {
-			if (confirm("Remove o amigo com id " + id)) {
+			if (confirm("Remove o amigo com ID " + id+"?")) {
 				$('#formAmigos').empty();
 				$('#formAmigos').append('<input type="hidden" name="txtId" value="' + id + '"/>');
 				$('#formAmigos').append('<input type="hidden" name="cmd" value="remover"/>');
@@ -52,6 +52,12 @@
 	
 	
 	<form id="formAmigos" action="./AmigosController" method="post">
+		<div class="container" align='Center'>	
+				<div class="form-group">
+					<button type="submit" class="btn btn-dark btn-lg" name="cmd" value="emprestimos">Empréstimos</button>
+					<button type="submit" class="btn btn-dark btn-lg" name="cmd" value="categoria">Categorias</button>
+				</div>
+		</div>
 		<div class="container">
 			<div class="form-group">
     			<label for="txtId">Id</label>

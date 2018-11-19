@@ -39,20 +39,18 @@ public class LoginController extends HttpServlet {
 		if(acao.equals("Logar")){
 			try {
 				if (usuarioDAO.logar(usuario)) {
-					mensagem = "Usuário logado!";
 					usuario = usuarioDAO.getUsuario(usuario);
+					mensagem = "Usuário logado! Bem vindo, "+usuario.getNome()+"!";
 					session.setAttribute("USUARIO", usuario);
 					response.sendRedirect("./principal.jsp");
 					session.setAttribute("LISTA", null);
 				} else {
 					mensagem = "Usuário ou senha incorreto";
 					response.sendRedirect("./index.jsp");
-					
 				}
 			} catch(Throwable e){
 				mensagem = "Não foi possível logar";
 				response.sendRedirect("./index.jsp");
-				
 			}
 			session.setAttribute("MENSAGEM", mensagem);
 		}else if(acao.equals("Cadastro")){

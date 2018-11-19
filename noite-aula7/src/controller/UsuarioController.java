@@ -58,7 +58,7 @@ public class UsuarioController extends HttpServlet {
 						usuario.setDataCadastro(dateFormat.format(date));
 						usuarioController.adicionaUsuario(usuario);
 						mensagem = "Seu cadastro foi realizado com sucesso! Bem vindo, "+usuario.getNome()+"!";
-						response.sendRedirect("./emprestimos.jsp");
+						response.sendRedirect("./principal.jsp");
 					} else {
 						mensagem = "Login já cadastrado no sistema. Por favor, digite outro.";
 						response.sendRedirect("./usuario.jsp");

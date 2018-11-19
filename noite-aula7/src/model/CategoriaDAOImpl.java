@@ -61,7 +61,6 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 		try {
 			ps = con.prepareStatement("SELECT IDCATEGORIA, TIPO FROM CATEGORIA WHERE TIPO LIKE '"+tipo+"' ");
 			ResultSet rs = ps.executeQuery();
-			//listaCategoria = new ArrayList<>();
 			while(rs.next()) {
 				Categoria categoria = new Categoria();
 				categoria.setId(rs.getInt("IDCATEGORIA"));

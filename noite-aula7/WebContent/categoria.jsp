@@ -11,7 +11,7 @@
 	<script src="./js/jquery-3.3.1.min.js"></script>
 		<script>
 		function remover( id ) {
-			if (confirm("Remove o sorvete com id " + id)) {
+			if (confirm("Remover categoria com ID " + id + "?")) {
 				$('#formCategoria').empty();
 				$('#formCategoria').append('<input type="hidden" name="txtId" value="' + id + '"/>');
 				$('#formCategoria').append('<input type="hidden" name="cmd" value="remover"/>');
@@ -52,6 +52,12 @@
 	
 	
 	<form id="formCategoria" action="./CategoriaController" method="post">
+		<div class="container" align='Center'>	
+				<div class="form-group">
+					<button type="submit" class="btn btn-dark btn-lg" name="cmd" value="amigos">Amigos</button>
+					<button type="submit" class="btn btn-dark btn-lg" name="cmd" value="emprestimos">Empréstimos</button>
+				</div>
+		</div>
 		<div class="container">
 			<div class="form-group">
     			<label for="txtId">Id</label>

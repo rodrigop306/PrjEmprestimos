@@ -131,9 +131,7 @@ public class EmprestimosDAOImpl implements EmprestimosDAO {
 		con = c.abrir();
 		PreparedStatement ps;
 		Emprestimos listaEmprestimos = null;
-		//Emprestimos e = new Emprestimos();
 		try {
-			
 				ps = con.prepareStatement(
 						"SELECT e.idusuario, e.idemprestimos, e.nomeobjeto, c.idcategoria, c.tipo, e.idamigodono, e.idamigoemprestimo, e.dataemprestimo, e.datadevolucao, e.status, e.detalhesemprestimos, a.nome FROM EMPRESTIMOS e, CATEGORIA c, AMIGOS a WHERE "
 								+ "e.idcategoria = c.idcategoria AND e.idemprestimos = ? AND (e.idamigodono = a.idamigo OR e.idamigoemprestimo = a.idamigo)");

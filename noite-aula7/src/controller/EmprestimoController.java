@@ -36,7 +36,6 @@ public class EmprestimoController extends HttpServlet {
 			throws ServletException, IOException {
 		String tipo = request.getParameter("txtAcao");
 		String acao = request.getParameter("cmd");
-
 		String mensagem = "";
 		Emprestimos emprestimo = new Emprestimos();
 		emprestimoController = new EmprestimosDAOImpl();
@@ -46,19 +45,15 @@ public class EmprestimoController extends HttpServlet {
 		Usuario usuario = (Usuario) session.getAttribute("USUARIO");
 		if (usuario != null) {
 			if (acao.equals("voltar")) {
+				session.setAttribute("LISTA", null);
 				response.sendRedirect("./principal.jsp");
-			} else if (acao.equals("Objetos")) {
-				response.sendRedirect("./emprestimos.jsp");
+			} else if (acao.equals("amigos")) {
+				response.sendRedirect("./amigos.jsp");
+			} else if (acao.equals("categorias")) {
+				response.sendRedirect("./categoria.jsp");
 			} else {
 				try {
-					if (acao.equals("amigos")) {
-						response.sendRedirect("./amigos.jsp");
-					}
-					if (acao.equals("categorias")) {
-						response.sendRedirect("./categoria.jsp");
-					}
 					if (acao.equals("adicionar")) {
-						// if (tipo.equals("pegarEmprestado") || tipo.equals("Emprestar")) {
 						emprestimo.setIdUsuario(usuario.getIdUsuario());
 						emprestimo.setNomeObjeto(request.getParameter("txtNomeObjeto"));
 						int idCategoria = Integer.parseInt(request.getParameter("txtCategoria"));
@@ -67,7 +62,6 @@ public class EmprestimoController extends HttpServlet {
 						emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
 						emprestimo.setStatus(request.getParameter("txtStatus"));
 						emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
-						// emprestimoController.adicionaEmprestimos(emprestimo);
 						if (tipo.equals("pegarEmprestado")) {
 							int idAmigo = Integer.parseInt(request.getParameter("amigo"));
 							emprestimo.setIdAmigoDono(idAmigo);
@@ -78,8 +72,6 @@ public class EmprestimoController extends HttpServlet {
 						}
 						emprestimoController.adicionaEmprestimos(emprestimo);
 						mensagem = "Empréstimo adicionado com sucesso.";
-
-						// }
 					} else if (acao.equals("pesquisar")) {
 						emprestimo.setIdUsuario(usuario.getIdUsuario());
 						emprestimo.setNomeObjeto(request.getParameter("txtNomeObjeto"));
@@ -97,7 +89,6 @@ public class EmprestimoController extends HttpServlet {
 							System.out.println(request.getParameter("amigo"));
 							emprestimo.setIdAmigoEmprestimo(idAmigo);
 						}
-
 						List<Emprestimos> emp = emprestimoController.pesquisaEmprestimos(emprestimo,
 								usuario.getIdUsuario());
 						session.setAttribute("LISTA", emp);
@@ -106,11 +97,8 @@ public class EmprestimoController extends HttpServlet {
 						String idEmp = request.getParameter("txtId");
 						emprestimoController.removeEmprestimo(Integer.parseInt(idEmp));
 						mensagem = "Empréstimo com o Id " + idEmp + " foi removido";
-						// List<Categoria> lista = categoriaDAO.pesquisaCategoria("");
-						// session.setAttribute("LISTA", lista);
 					} else if ("editar".equals(acao)) {
 						String id = request.getParameter("txtId");
-						// Categoria s = sDao.pesquisarPorId(Long.parseLong(id));
 						emprestimo = emprestimoController.pesquisaPorId(Integer.parseInt(id));
 						session.setAttribute("EMP_ATUAL", emprestimo);
 						mensagem = "Detalhes da empréstimos com o Id " + id;
@@ -125,7 +113,6 @@ public class EmprestimoController extends HttpServlet {
 						emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
 						emprestimo.setStatus(request.getParameter("txtStatus"));
 						emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
-						// emprestimoController.adicionaEmprestimos(emprestimo);
 						if (tipo.equals("pegarEmprestado")) {
 							int idAmigo = Integer.parseInt(request.getParameter("amigo"));
 							emprestimo.setIdAmigoDono(idAmigo);
@@ -137,13 +124,9 @@ public class EmprestimoController extends HttpServlet {
 						emprestimoController.atualizaEmprestimo(emprestimo);
 						mensagem = "Emprestimo atualizado com sucesso";
 
-					} else if (acao.equals("voltar")) {
-						// response.sendRedirect("./principal.jsp");
-						session.setAttribute("LISTA", null);
 					}
 				} catch (Throwable e) {
 					mensagem = "A ação não pôde ser concluída";
-					// response.sendRedirect("./emprestimos.jsp");
 					System.out.println(e);
 				}
 				session.setAttribute("MENSAGEM", mensagem);

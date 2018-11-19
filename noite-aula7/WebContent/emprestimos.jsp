@@ -14,7 +14,7 @@
         <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
 	<script>
 	function remover( id ) {
-		if (confirm("Remove o sorvete com id " + id)) {
+		if (confirm("Remove o empréstimo com ID " + id+"?")) {
 			$('#formEmprestimo').empty();
 			$('#formEmprestimo').append('<input type="hidden" name="txtId" value="' + id + '"/>');
 			$('#formEmprestimo').append('<input type="hidden" name="cmd" value="remover"/>');
@@ -71,6 +71,12 @@
 	
 	
 	<form id="formEmprestimo" action="./EmprestimoController" method="post">
+		<div class="container" align='Center'>	
+				<div class="form-group">
+					<button type="submit" class="btn btn-dark btn-lg" name="cmd" value="amigos">Amigos</button>
+					<button type="submit" class="btn btn-dark btn-lg" name="cmd" value="categorias">Categorias</button>
+				</div>
+		</div>
 		<div class="container">
 			<div class="form-group">
 			<%if(emprestimoAtual.getIdEmprestimos()==0){ %>

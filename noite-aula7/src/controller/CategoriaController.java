@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.Amigos;
+import model.AmigosDAOImpl;
 import model.Categoria;
 import model.CategoriaDAOImpl;
 import model.Usuario;
@@ -34,9 +36,18 @@ public class CategoriaController extends HttpServlet {
 		Usuario u = (Usuario) session.getAttribute("USUARIO");
 		if (u != null) {
 			if(acao.equals("voltar")){
+				session.setAttribute("LISTA", null);
 				response.sendRedirect("./principal.jsp");
-			} else if(acao.equals("Categorias")){
-				response.sendRedirect("./categoria.jsp");
+			} else if(acao.equals("emprestimos")){
+				AmigosDAOImpl amigo = new AmigosDAOImpl();
+				List<Amigos> lista = amigo.pesquisarAmigo("", u.getIdUsuario());
+				session.setAttribute("LISTAAMIGO", lista);
+				CategoriaDAOImpl cat = new CategoriaDAOImpl();
+				List<Categoria> listaCat = cat.listaCategoria();
+				session.setAttribute("LISTACAT", listaCat);
+				response.sendRedirect("./emprestimos.jsp");
+			} else if(acao.equals("amigos")){
+				response.sendRedirect("./amigos.jsp");
 			} else {
 				try {
 					if (acao.equals("adicionar")) {
@@ -70,8 +81,6 @@ public class CategoriaController extends HttpServlet {
 						List<Categoria> lista = categoriaDAO.pesquisaCategoria("");
 						session.setAttribute("LISTA", lista);
 						mensagem = "Categoria atualizada com sucesso";
-					}else if(acao.equals("voltar")){
-						session.setAttribute("LISTA", null);
 					}
 				} catch (Throwable e) {
 					mensagem = "Não foi possível realizar a ação.";

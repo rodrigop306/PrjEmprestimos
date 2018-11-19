@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Amigos;
 import model.AmigosDAOImpl;
+import model.Categoria;
+import model.CategoriaDAOImpl;
 import model.Usuario;
 
 @WebServlet("/AmigosController")
@@ -33,17 +35,20 @@ public class AmigosController extends HttpServlet {
 		Usuario usuario = (Usuario) session.getAttribute("USUARIO");
 		if (usuario != null) {
 			if (acao.equals("voltar")) {
+				session.setAttribute("LISTA", null);
 				response.sendRedirect("./principal.jsp");
-			} else if (acao.equals("Amigos")) {
-				response.sendRedirect("./amigos.jsp");
+			} else if (acao.equals("emprestimos")) {
+				AmigosDAOImpl amigo = new AmigosDAOImpl();
+				List<Amigos> lista = amigo.pesquisarAmigo("", usuario.getIdUsuario());
+				session.setAttribute("LISTAAMIGO", lista);
+				CategoriaDAOImpl cat = new CategoriaDAOImpl();
+				List<Categoria> listaCat = cat.listaCategoria();
+				session.setAttribute("LISTACAT", listaCat);
+				response.sendRedirect("./emprestimos.jsp");
+			} else if (acao.equals("categoria")) {
+				response.sendRedirect("./categoria.jsp");
 			} else {
 				try {
-					if (acao.equals("emprestimos")) {
-						response.sendRedirect("./emprestimos.jsp");
-					}
-					if (acao.equals("categorias")) {
-						response.sendRedirect("./categoria.jsp");
-					}
 					if (acao.equals("adicionar")) {
 						Amigos amigos = new Amigos();
 						amigos.setIdUsuario(usuario.getIdUsuario());
@@ -83,9 +88,6 @@ public class AmigosController extends HttpServlet {
 						List<Amigos> lista = amigosController.pesquisarAmigo("", usuario.getIdUsuario());
 						session.setAttribute("LISTA", lista);
 						mensagem = "Amigo atualizada com sucesso";
-					} else if (acao.equals("voltar")) {
-						// response.sendRedirect("./principal.jsp");
-						session.setAttribute("LISTA", null);
 					}
 				} catch (Throwable e) {
 					mensagem = "Não foi possível realizar a ação.";
