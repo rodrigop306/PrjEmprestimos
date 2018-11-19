@@ -33,60 +33,55 @@ public class CategoriaController extends HttpServlet {
 		categoriaDAO = new CategoriaDAOImpl();
 		Usuario u = (Usuario) session.getAttribute("USUARIO");
 		if (u != null) {
-			try {
-				if(acao.equals("amigos")){
-					response.sendRedirect("./amigos.jsp");
+			if(acao.equals("voltar")){
+				response.sendRedirect("./principal.jsp");
+			} else if(acao.equals("Categorias")){
+				response.sendRedirect("./categoria.jsp");
+			} else {
+				try {
+					if (acao.equals("adicionar")) {
+						Categoria c = new Categoria();
+						c.setTipo(request.getParameter("txtTipo"));
+						categoriaDAO.adicionaCategoria(c);
+						mensagem = "Categoria adicionada com sucesso";
+					}
+					if (acao.equals("pesquisar")) {
+						List<Categoria> lista = categoriaDAO.pesquisaCategoria(request.getParameter("txtTipo"));
+						session.setAttribute("LISTA", lista);
+						mensagem = "A busca retornou " + lista.size() + " resultados.";
+					}
+					if ("editar".equals(acao)) {
+						String id = request.getParameter("txtId");
+						Categoria c = categoriaDAO.getCategoria(Integer.parseInt(id));
+						session.setAttribute("CATEGORIA_ATUAL", c);
+						mensagem = "Detalhes da categoria com o Id " + id;
+					}
+					if ("remover".equals(acao)) {
+						String idCat = request.getParameter("txtId");
+						categoriaDAO.removeCategoria(Integer.parseInt(idCat));
+						mensagem = "Categoria com o Id " + idCat + " foi removido";
+						List<Categoria> lista = categoriaDAO.pesquisaCategoria("");
+						session.setAttribute("LISTA", lista);
+					} else if ("salvar".equals(acao)) {
+						Categoria c = new Categoria();
+						c.setId(Integer.parseInt(request.getParameter("txtId")));
+						c.setTipo(request.getParameter("txtTipo"));
+						categoriaDAO.editarCategoria(c);	
+						List<Categoria> lista = categoriaDAO.pesquisaCategoria("");
+						session.setAttribute("LISTA", lista);
+						mensagem = "Categoria atualizada com sucesso";
+					}else if(acao.equals("voltar")){
+						session.setAttribute("LISTA", null);
+					}
+				} catch (Throwable e) {
+					mensagem = "Não foi possível realizar a ação.";
 				}
-				if(acao.equals("emprestimos")){
-					response.sendRedirect("./emprestimos.jsp");
-				}
-				if (acao.equals("adicionar")) {
-					Categoria c = new Categoria();
-					c.setTipo(request.getParameter("txtTipo"));
-					categoriaDAO.adicionaCategoria(c);
-					mensagem = "Categoria adicionada com sucesso";
-				}
-				if (acao.equals("pesquisar")) {
-					List<Categoria> lista = categoriaDAO.pesquisaCategoria(request.getParameter("txtTipo"));
-					session.setAttribute("LISTA", lista);
-					mensagem = "A busca retornou " + lista.size() + " resultados.";
-				}
-				if ("editar".equals(acao)) {
-					String id = request.getParameter("txtId");
-					// Categoria s = sDao.pesquisarPorId(Long.parseLong(id));
-					Categoria c = categoriaDAO.getCategoria(Integer.parseInt(id));
-					session.setAttribute("CATEGORIA_ATUAL", c);
-					mensagem = "Detalhes da categoria com o Id " + id;
-				}
-				if ("remover".equals(acao)) {
-					String idCat = request.getParameter("txtId");
-					categoriaDAO.removeCategoria(Integer.parseInt(idCat));
-					mensagem = "Categoria com o Id " + idCat + " foi removido";
-					List<Categoria> lista = categoriaDAO.pesquisaCategoria("");
-					session.setAttribute("LISTA", lista);
-				} else if ("salvar".equals(acao)) {
-					Categoria c = new Categoria();
-					c.setId(Integer.parseInt(request.getParameter("txtId")));
-					c.setTipo(request.getParameter("txtTipo"));
-					categoriaDAO.editarCategoria(c);
-					
-					List<Categoria> lista = categoriaDAO.pesquisaCategoria("");
-					session.setAttribute("LISTA", lista);
-					mensagem = "Categoria atualizada com sucesso";
-				}else if(acao.equals("voltar")){
-					//response.sendRedirect("./principal.jsp");
-					session.setAttribute("LISTA", null);
-				}
-			} catch (Throwable e) {
-				mensagem = "Não foi possível realizar a ação.";
-				
-				//response.sendRedirect("./categoria.jsp");
+				session.setAttribute("MENSAGEM", mensagem);
+				response.sendRedirect("./categoria.jsp");
 			}
 		} else {
 			mensagem = "Faça o login para adicionar categorias.";
 			response.sendRedirect("./index.jsp");
 		}
-		session.setAttribute("MENSAGEM", mensagem);
-		response.sendRedirect("./categoria.jsp");
 	}
 }

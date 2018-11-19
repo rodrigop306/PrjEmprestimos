@@ -45,18 +45,20 @@ public class EmprestimoController extends HttpServlet {
 		HttpSession session = request.getSession();
 		Usuario usuario = (Usuario) session.getAttribute("USUARIO");
 		if (usuario != null) {
-			//Amigos a = new Amigos();
-
-			// if(a != null){
-			try {
-				if(acao.equals("amigos")){
-					response.sendRedirect("./amigos.jsp");
-				}
-				if(acao.equals("categorias")){
-					response.sendRedirect("./categoria.jsp");
-				}
-				if (acao.equals("adicionar")) {
-					//if (tipo.equals("pegarEmprestado") || tipo.equals("Emprestar")) {
+			if (acao.equals("voltar")) {
+				response.sendRedirect("./principal.jsp");
+			} else if (acao.equals("Objetos")) {
+				response.sendRedirect("./emprestimos.jsp");
+			} else {
+				try {
+					if (acao.equals("amigos")) {
+						response.sendRedirect("./amigos.jsp");
+					}
+					if (acao.equals("categorias")) {
+						response.sendRedirect("./categoria.jsp");
+					}
+					if (acao.equals("adicionar")) {
+						// if (tipo.equals("pegarEmprestado") || tipo.equals("Emprestar")) {
 						emprestimo.setIdUsuario(usuario.getIdUsuario());
 						emprestimo.setNomeObjeto(request.getParameter("txtNomeObjeto"));
 						int idCategoria = Integer.parseInt(request.getParameter("txtCategoria"));
@@ -65,7 +67,7 @@ public class EmprestimoController extends HttpServlet {
 						emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
 						emprestimo.setStatus(request.getParameter("txtStatus"));
 						emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
-						//emprestimoController.adicionaEmprestimos(emprestimo);
+						// emprestimoController.adicionaEmprestimos(emprestimo);
 						if (tipo.equals("pegarEmprestado")) {
 							int idAmigo = Integer.parseInt(request.getParameter("amigo"));
 							emprestimo.setIdAmigoDono(idAmigo);
@@ -76,79 +78,83 @@ public class EmprestimoController extends HttpServlet {
 						}
 						emprestimoController.adicionaEmprestimos(emprestimo);
 						mensagem = "Empréstimo adicionado com sucesso.";
-						
-					//}
-				}else if (acao.equals("pesquisar")) {
-					emprestimo.setIdUsuario(usuario.getIdUsuario());
-					emprestimo.setNomeObjeto(request.getParameter("txtNomeObjeto"));
-					int idCategoria = Integer.parseInt(request.getParameter("txtCategoria"));
-					emprestimo.setIdCategoria(idCategoria);
-					emprestimo.setDataEmprestimo(request.getParameter("txtDataEmprestimo"));
-					emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
-					emprestimo.setStatus(request.getParameter("txtStatus"));
-					emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
-					if (tipo.equals("pegarEmprestado")) {
-						int idAmigo = Integer.parseInt(request.getParameter("amigo"));
-						emprestimo.setIdAmigoDono(idAmigo);
-					} else if (tipo.equals("emprestar")) {
-						int idAmigo = Integer.parseInt(request.getParameter("amigo"));
-						System.out.println(request.getParameter("amigo"));
-						emprestimo.setIdAmigoEmprestimo(idAmigo);
+
+						// }
+					} else if (acao.equals("pesquisar")) {
+						emprestimo.setIdUsuario(usuario.getIdUsuario());
+						emprestimo.setNomeObjeto(request.getParameter("txtNomeObjeto"));
+						int idCategoria = Integer.parseInt(request.getParameter("txtCategoria"));
+						emprestimo.setIdCategoria(idCategoria);
+						emprestimo.setDataEmprestimo(request.getParameter("txtDataEmprestimo"));
+						emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
+						emprestimo.setStatus(request.getParameter("txtStatus"));
+						emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
+						if (tipo.equals("pegarEmprestado")) {
+							int idAmigo = Integer.parseInt(request.getParameter("amigo"));
+							emprestimo.setIdAmigoDono(idAmigo);
+						} else if (tipo.equals("emprestar")) {
+							int idAmigo = Integer.parseInt(request.getParameter("amigo"));
+							System.out.println(request.getParameter("amigo"));
+							emprestimo.setIdAmigoEmprestimo(idAmigo);
+						}
+
+						List<Emprestimos> emp = emprestimoController.pesquisaEmprestimos(emprestimo,
+								usuario.getIdUsuario());
+						session.setAttribute("LISTA", emp);
+						mensagem = "Foram encontrados " + emp.size() + " empréstimos";
+					} else if ("remover".equals(acao)) {
+						String idEmp = request.getParameter("txtId");
+						emprestimoController.removeEmprestimo(Integer.parseInt(idEmp));
+						mensagem = "Empréstimo com o Id " + idEmp + " foi removido";
+						// List<Categoria> lista = categoriaDAO.pesquisaCategoria("");
+						// session.setAttribute("LISTA", lista);
+					} else if ("editar".equals(acao)) {
+						String id = request.getParameter("txtId");
+						// Categoria s = sDao.pesquisarPorId(Long.parseLong(id));
+						emprestimo = emprestimoController.pesquisaPorId(Integer.parseInt(id));
+						session.setAttribute("EMP_ATUAL", emprestimo);
+						mensagem = "Detalhes da empréstimos com o Id " + id;
+					} else if ("salvar".equals(acao)) {
+						emprestimo = new Emprestimos();
+						emprestimo.setIdUsuario(usuario.getIdUsuario());
+						emprestimo.setIdEmprestimos(Integer.parseInt(request.getParameter("txtId")));
+						emprestimo.setNomeObjeto(request.getParameter("txtNomeObjeto"));
+						int idCategoria = Integer.parseInt(request.getParameter("txtCategoria"));
+						emprestimo.setIdCategoria(idCategoria);
+						emprestimo.setDataEmprestimo(request.getParameter("txtDataEmprestimo"));
+						emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
+						emprestimo.setStatus(request.getParameter("txtStatus"));
+						emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
+						// emprestimoController.adicionaEmprestimos(emprestimo);
+						if (tipo.equals("pegarEmprestado")) {
+							int idAmigo = Integer.parseInt(request.getParameter("amigo"));
+							emprestimo.setIdAmigoDono(idAmigo);
+						} else if (tipo.equals("emprestar")) {
+							int idAmigo = Integer.parseInt(request.getParameter("amigo"));
+							System.out.println(request.getParameter("amigo"));
+							emprestimo.setIdAmigoEmprestimo(idAmigo);
+						}
+						emprestimoController.atualizaEmprestimo(emprestimo);
+						mensagem = "Emprestimo atualizado com sucesso";
+
+					} else if (acao.equals("voltar")) {
+						// response.sendRedirect("./principal.jsp");
+						session.setAttribute("LISTA", null);
 					}
-					List<Emprestimos> emp = emprestimoController.pesquisaEmprestimos(emprestimo, usuario.getIdUsuario());
-					session.setAttribute("LISTA", emp);
-				}else if ("remover".equals(acao)) {
-					String idEmp = request.getParameter("txtId");
-					emprestimoController.removeEmprestimo(Integer.parseInt(idEmp));
-					mensagem = "Categoria com o Id " + idEmp + " foi removido";
-					//List<Categoria> lista = categoriaDAO.pesquisaCategoria("");
-					//session.setAttribute("LISTA", lista);
-				}else if ("editar".equals(acao)) {
-					String id = request.getParameter("txtId");
-					// Categoria s = sDao.pesquisarPorId(Long.parseLong(id));
-					emprestimo = emprestimoController.pesquisaPorId(Integer.parseInt(id));
-					session.setAttribute("EMP_ATUAL", emprestimo);
-					mensagem = "Detalhes da categoria com o Id " + id;
-				} else if ("salvar".equals(acao)) {
-					emprestimo = new Emprestimos();
-					emprestimo.setIdUsuario(usuario.getIdUsuario());
-					emprestimo.setIdEmprestimos(Integer.parseInt(request.getParameter("txtId")));
-					emprestimo.setNomeObjeto(request.getParameter("txtNomeObjeto"));
-					int idCategoria = Integer.parseInt(request.getParameter("txtCategoria"));
-					emprestimo.setIdCategoria(idCategoria);
-					emprestimo.setDataEmprestimo(request.getParameter("txtDataEmprestimo"));
-					emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
-					emprestimo.setStatus(request.getParameter("txtStatus"));
-					emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
-					//emprestimoController.adicionaEmprestimos(emprestimo);
-					if (tipo.equals("pegarEmprestado")) {
-						int idAmigo = Integer.parseInt(request.getParameter("amigo"));
-						emprestimo.setIdAmigoDono(idAmigo);
-					} else if (tipo.equals("emprestar")) {
-						int idAmigo = Integer.parseInt(request.getParameter("amigo"));
-						System.out.println(request.getParameter("amigo"));
-						emprestimo.setIdAmigoEmprestimo(idAmigo);
-					}
-					emprestimoController.atualizaEmprestimo(emprestimo);
-					mensagem = "Emprestimo atualizado com sucesso";
-					
-				}else if(acao.equals("voltar")){
-					//response.sendRedirect("./principal.jsp");
-					session.setAttribute("LISTA", null);
+				} catch (Throwable e) {
+					mensagem = "A ação não pôde ser concluída";
+					// response.sendRedirect("./emprestimos.jsp");
+					System.out.println(e);
 				}
-			} catch (Throwable e) {
-				mensagem = "A ação não pôde ser concluída";
-				//response.sendRedirect("./emprestimos.jsp");
-				System.out.println(e);
+				session.setAttribute("MENSAGEM", mensagem);
+				AmigosDAOImpl amigo = new AmigosDAOImpl();
+				List<Amigos> lista = amigo.pesquisarAmigo("", usuario.getIdUsuario());
+				session.setAttribute("LISTAAMIGO", lista);
+				CategoriaDAOImpl cat = new CategoriaDAOImpl();
+				List<Categoria> listaCat = cat.listaCategoria();
+				session.setAttribute("LISTACAT", listaCat);
+				response.sendRedirect("./emprestimos.jsp");
 			}
-			//session.setAttribute("MENSAGEM", mensagem);
-			AmigosDAOImpl amigo = new AmigosDAOImpl();
-			List<Amigos> lista = amigo.pesquisarAmigo("", usuario.getIdUsuario());
-			session.setAttribute("LISTAAMIGO", lista);
-			CategoriaDAOImpl cat = new CategoriaDAOImpl();
-			List<Categoria> listaCat = cat.listaCategoria();
-			session.setAttribute("LISTACAT", listaCat);
-			response.sendRedirect("./emprestimos.jsp");
 		} else {
 			mensagem = "Faça login para registrar o empréstimo.";
 			response.sendRedirect("./index.jsp");
