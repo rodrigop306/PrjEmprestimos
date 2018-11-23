@@ -24,11 +24,11 @@
 		
 			<div class="container">
 				<div class="form-group">
-    				<label for="txtLogin">Login</label>
+    				<label for="txtLogin">Login:</label>
     				<input type="text" class="form-control" id="txtLogin" name="txtLogin"/>
   				</div>  			 
 				<div class="form-group">
-    				<label for="txtLogin">Senha</label>
+    				<label for="txtLogin">Senha:</label>
     				<input type="password" class="form-control" id="txtPassword" name="txtPassword"/>
   				</div> 		
 				<div class="form-group">

@@ -98,15 +98,15 @@
 			<%} %>
 			</div>	
 			<div class="form-group">
-    			<label for="txtId">Id</label>
+    			<label for="txtId">Id:</label>
     			<input type="text" class="form-control" id="txtId" name="txtId" value="<%=emprestimoAtual.getIdEmprestimos()%>" readonly/>
   			</div>
 			<div class="form-group">
-    			<label for="txtNomeObjeto">Nome do Objeto</label>
+    			<label for="txtNomeObjeto">Nome do Objeto: *</label>
     			<input type="text" class="form-control" id="txtNomeObjeto" name="txtNomeObjeto" value="<%=emprestimoAtual.getNomeObjeto()%>"/>
   			</div>
   			<div class="form-group" id="Emprestei">
-    			<label for="txtEmprestar" id = "Emprestimo">Emprestei para</label>
+    			<label for="txtEmprestar" id = "Emprestimo">Emprestei para: *</label>
     			
     			<select class="form-control" id="amigo" name="amigo">
       				<%for(Amigos a : listaAmig){ %>
@@ -116,7 +116,7 @@
   			</div> 
   			  	
 			<div class="form-group">
-    			<label for="txtCategoria">Categoria</label>
+    			<label for="txtCategoria">Categoria: *</label>
     			<select class="form-control" id="txtCategoria" name="txtCategoria">
       				<%for(Categoria c : listaCat){ %>
       					<option value="<%=c.getId()%>"><%= c.getTipo() %></option>
@@ -124,15 +124,15 @@
 				</select>
 			</div>
 			<div class="form-group">
-    			<label for="txtDataEmprestimo">Data de emprestimo</label>
+    			<label for="txtDataEmprestimo">Data de emprestimo: *</label>
     			<input type="text" class="form-control" id="txtDataEmprestimo" name="txtDataEmprestimo" value="<%=emprestimoAtual.getDataEmprestimo() %>"/>
   			</div>  
   			<div class="form-group">
-    			<label for="txtDataDevolucao">Data de devolução</label>
+    			<label for="txtDataDevolucao">Data de devolução: *</label>
     			<input type="text" class="form-control" id="txtDataDevolucao" name="txtDataDevolucao" value="<%=emprestimoAtual.getDataDevolucao() %>"/>
   			</div>  
   			<div class="form-group">
-    			<label for="txtStatus">Status</label>
+    			<label for="txtStatus">Status:</label>
     			<select class="form-control" id="txtStatus" name="txtStatus">
       				<option value="Em dia">Em dia</option>
       				<option value="Concluido">Concluído</option>
@@ -140,7 +140,7 @@
 				</select>
 			</div>
 			<div class="form-group">
-    			<label for="txtDetalhes">Detalhes</label>
+    			<label for="txtDetalhes">Detalhes:</label>
     			<input type="text" class="form-control" id="txtDetalhes" name="txtDetalhes" value="<%=emprestimoAtual.getDetalhesEmprestimo() %>"/>
 			</div>
 			<div class="form-group">
@@ -157,12 +157,12 @@
 			var acao = document.getElementById('txtAcao');
 			document.getElementById( 'txtAcao' ).addEventListener( 'change', function(){
     			if(this.value === 'emprestar') {
-    				$('#Emprestimo').html('Emprestei para');
+    				$('#Emprestimo').html('Emprestei para: *');
   				}else if(this.value === null) {
-  					$('#Emprestimo').html('Peguei de');    				
+  					$('#Emprestimo').html('Peguei de: *');    				
   				}    			
     			else {
-    				$('#Emprestimo').html('Peguei de');
+    				$('#Emprestimo').html('Peguei de: *');
     			}
 			});
 		</script>

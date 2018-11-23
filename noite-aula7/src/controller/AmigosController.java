@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import model.Amigos;
 import model.AmigosDAOImpl;
 import model.Categoria;
@@ -51,12 +52,17 @@ public class AmigosController extends HttpServlet {
 				try {
 					if (acao.equals("adicionar")) {
 						Amigos amigos = new Amigos();
-						amigos.setIdUsuario(usuario.getIdUsuario());
-						amigos.setNome(request.getParameter("txtNome"));
-						amigos.setEmail(request.getParameter("txtEmail"));
-						amigos.setTelefone(request.getParameter("txtTelefone"));
-						amigosController.adicionaAmigo(amigos);
-						mensagem = "Amigo adicionado com sucesso.";
+						String txtNome = (String) request.getParameter("txtNome");
+						if(txtNome != null && !txtNome.trim().equals("")){
+							amigos.setIdUsuario(usuario.getIdUsuario());
+							amigos.setNome(txtNome);
+							amigos.setEmail(request.getParameter("txtEmail"));
+							amigos.setTelefone(request.getParameter("txtTelefone"));
+							amigosController.adicionaAmigo(amigos);
+							mensagem = "Amigo adicionado com sucesso.";
+						} else {
+							mensagem = "Digite o nome do amigo para cadastrá-lo.";
+						}
 					}
 					if (acao.equals("pesquisar")) {
 						String nomeAmigo = request.getParameter("txtNome");
@@ -81,13 +87,18 @@ public class AmigosController extends HttpServlet {
 					if ("salvar".equals(acao)) {
 						Amigos amigos = new Amigos();
 						amigos.setIdAmigo(Integer.parseInt(request.getParameter("txtId")));
-						amigos.setNome(request.getParameter("txtNome"));
-						amigos.setEmail(request.getParameter("txtEmail"));
-						amigos.setTelefone(request.getParameter("txtTelefone"));
-						amigosController.editaAmigo(amigos);
-						List<Amigos> lista = amigosController.pesquisarAmigo("", usuario.getIdUsuario());
-						session.setAttribute("LISTA", lista);
-						mensagem = "Amigo atualizada com sucesso";
+						String txtNome = (String) request.getParameter("txtNome");
+						if(txtNome != null && !txtNome.trim().equals("")){
+							amigos.setNome(txtNome);
+							amigos.setEmail(request.getParameter("txtEmail"));
+							amigos.setTelefone(request.getParameter("txtTelefone"));
+							amigosController.editaAmigo(amigos);
+							List<Amigos> lista = amigosController.pesquisarAmigo("", usuario.getIdUsuario());
+							session.setAttribute("LISTA", lista);
+							mensagem = "Amigo atualizada com sucesso";
+						} else {
+							mensagem = "Informe o nome do amigo.";
+						}
 					}
 				} catch (Throwable e) {
 					mensagem = "Não foi possível realizar a ação.";

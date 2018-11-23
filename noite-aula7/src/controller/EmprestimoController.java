@@ -10,14 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.CategoriaDAOImpl;
 import model.Amigos;
-import model.Emprestimos;
 import model.AmigosDAOImpl;
 import model.Categoria;
+import model.CategoriaDAOImpl;
+import model.Emprestimos;
 import model.EmprestimosDAOImpl;
 import model.Usuario;
-import model.AmigosDAOImpl;
 
 @WebServlet("/EmprestimoController")
 public class EmprestimoController extends HttpServlet {
@@ -54,24 +53,33 @@ public class EmprestimoController extends HttpServlet {
 			} else {
 				try {
 					if (acao.equals("adicionar")) {
-						emprestimo.setIdUsuario(usuario.getIdUsuario());
-						emprestimo.setNomeObjeto(request.getParameter("txtNomeObjeto"));
+						String nomeObjeto = (String) request.getParameter("txtNomeObjeto");
 						int idCategoria = Integer.parseInt(request.getParameter("txtCategoria"));
-						emprestimo.setIdCategoria(idCategoria);
-						emprestimo.setDataEmprestimo(request.getParameter("txtDataEmprestimo"));
-						emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
-						emprestimo.setStatus(request.getParameter("txtStatus"));
-						emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
-						if (tipo.equals("pegarEmprestado")) {
-							int idAmigo = Integer.parseInt(request.getParameter("amigo"));
-							emprestimo.setIdAmigoDono(idAmigo);
-						} else if (tipo.equals("emprestar")) {
-							int idAmigo = Integer.parseInt(request.getParameter("amigo"));
-							System.out.println(request.getParameter("amigo"));
-							emprestimo.setIdAmigoEmprestimo(idAmigo);
+						int idAmigo = Integer.parseInt(request.getParameter("amigo"));
+						String dataEmprestimo = (String) request.getParameter("txtDataEmprestimo");
+						String dataDevolucao = (String) request.getParameter("txtDataDevolucao");
+						if((nomeObjeto != null && !nomeObjeto.trim().equals(""))
+								&& idCategoria != 0
+								&& idAmigo != 0
+								&& dataEmprestimo != null && !dataEmprestimo.trim().equals("")
+								&& dataDevolucao != null && !dataDevolucao.trim().equals("")){
+							emprestimo.setIdUsuario(usuario.getIdUsuario());
+							emprestimo.setNomeObjeto(nomeObjeto);
+							emprestimo.setIdCategoria(idCategoria);
+							emprestimo.setDataEmprestimo(dataEmprestimo);
+							emprestimo.setDataDevolucao(dataDevolucao);
+							emprestimo.setStatus(request.getParameter("txtStatus"));
+							emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
+							if (tipo.equals("pegarEmprestado")) {
+								emprestimo.setIdAmigoDono(idAmigo);
+							} else if (tipo.equals("emprestar")) {
+								emprestimo.setIdAmigoEmprestimo(idAmigo);
+							}
+							emprestimoController.adicionaEmprestimos(emprestimo);
+							mensagem = "Empréstimo adicionado com sucesso.";
+						} else {
+							mensagem = "Informe todos os campos obrigatórios, marcados com *.";
 						}
-						emprestimoController.adicionaEmprestimos(emprestimo);
-						mensagem = "Empréstimo adicionado com sucesso.";
 					} else if (acao.equals("pesquisar")) {
 						emprestimo.setIdUsuario(usuario.getIdUsuario());
 						emprestimo.setNomeObjeto(request.getParameter("txtNomeObjeto"));
@@ -104,26 +112,34 @@ public class EmprestimoController extends HttpServlet {
 						mensagem = "Detalhes da empréstimos com o Id " + id;
 					} else if ("salvar".equals(acao)) {
 						emprestimo = new Emprestimos();
-						emprestimo.setIdUsuario(usuario.getIdUsuario());
-						emprestimo.setIdEmprestimos(Integer.parseInt(request.getParameter("txtId")));
-						emprestimo.setNomeObjeto(request.getParameter("txtNomeObjeto"));
+						String nomeObjeto = (String) request.getParameter("txtNomeObjeto");
 						int idCategoria = Integer.parseInt(request.getParameter("txtCategoria"));
-						emprestimo.setIdCategoria(idCategoria);
-						emprestimo.setDataEmprestimo(request.getParameter("txtDataEmprestimo"));
-						emprestimo.setDataDevolucao(request.getParameter("txtDataDevolucao"));
-						emprestimo.setStatus(request.getParameter("txtStatus"));
-						emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
-						if (tipo.equals("pegarEmprestado")) {
-							int idAmigo = Integer.parseInt(request.getParameter("amigo"));
-							emprestimo.setIdAmigoDono(idAmigo);
-						} else if (tipo.equals("emprestar")) {
-							int idAmigo = Integer.parseInt(request.getParameter("amigo"));
-							System.out.println(request.getParameter("amigo"));
-							emprestimo.setIdAmigoEmprestimo(idAmigo);
+						int idAmigo = Integer.parseInt(request.getParameter("amigo"));
+						String dataEmprestimo = (String) request.getParameter("txtDataEmprestimo");
+						String dataDevolucao = (String) request.getParameter("txtDataDevolucao");
+						if((nomeObjeto != null && !nomeObjeto.trim().equals(""))
+								&& idCategoria != 0
+								&& idAmigo != 0
+								&& (dataEmprestimo != null && !dataEmprestimo.trim().equals(""))
+								&& dataDevolucao != null && !dataDevolucao.trim().equals("")){
+							emprestimo.setIdUsuario(usuario.getIdUsuario());
+							emprestimo.setIdEmprestimos(Integer.parseInt(request.getParameter("txtId")));
+							emprestimo.setNomeObjeto(nomeObjeto);
+							emprestimo.setIdCategoria(idCategoria);
+							emprestimo.setDataEmprestimo(dataEmprestimo);
+							emprestimo.setDataDevolucao(dataDevolucao);
+							emprestimo.setStatus(request.getParameter("txtStatus"));
+							emprestimo.setDetalhesEmprestimo(request.getParameter("txtDetalhes"));
+							if (tipo.equals("pegarEmprestado")) {
+								emprestimo.setIdAmigoDono(idAmigo);
+							} else if (tipo.equals("emprestar")) {
+								emprestimo.setIdAmigoEmprestimo(idAmigo);
+							}
+							emprestimoController.atualizaEmprestimo(emprestimo);
+							mensagem = "Emprestimo atualizado com sucesso";
+						} else {
+							mensagem = "Informe os dados obrigatórios (marcados com *) para atualizar o empréstimo";
 						}
-						emprestimoController.atualizaEmprestimo(emprestimo);
-						mensagem = "Emprestimo atualizado com sucesso";
-
 					}
 				} catch (Throwable e) {
 					mensagem = "A ação não pôde ser concluída";

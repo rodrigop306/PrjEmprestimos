@@ -60,19 +60,19 @@
 		</div>
 		<div class="container">
 			<div class="form-group">
-    			<label for="txtId">Id</label>
+    			<label for="txtId">Id:</label>
     			<input type="text" class="form-control" id="txtId" name="txtId" value="<%=amigoAtual.getIdAmigo()%>" readonly/>
   			</div>
 			<div class="form-group">
-    			<label for="txtNome">Nome</label>
+    			<label for="txtNome">Nome: *</label>
     			<input type="text" class="form-control" id="txtNome" name="txtNome" value="<%=amigoAtual.getNome()%>"/>
   			</div>  	
 			<div class="form-group">
-    			<label for="txtEmail">Email</label>
+    			<label for="txtEmail">Email:</label>
     			<input type="text" class="form-control" id="txtEmail" name="txtEmail" value="<%=amigoAtual.getEmail()%>"/>
   			</div>
   			<div class="form-group">
-    			<label for="txtTelefone">Telefone</label>
+    			<label for="txtTelefone">Telefone:</label>
     			<input type="text" class="form-control" id="txtTelefone" name="txtTelefone" value="<%=amigoAtual.getTelefone()%>"/>
   			</div>   
 			<div class="form-group">

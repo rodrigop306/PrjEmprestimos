@@ -60,11 +60,11 @@
 		</div>
 		<div class="container">
 			<div class="form-group">
-    			<label for="txtId">Id</label>
+    			<label for="txtId">Id:</label>
     			<input type="text" class="form-control" id="txtId" name="txtId" value="<%=categoriaAtual.getId()%>" readonly/>
   			</div>
   			<div class="form-group">
-    			<label for="txtSabor">Tipo</label>
+    			<label for="txtSabor">Tipo: *</label>
     			<input type="text" class="form-control" id="txtTipo" name="txtTipo" value="<%=categoriaAtual.getTipo()%>"/>
 			</div>
   			

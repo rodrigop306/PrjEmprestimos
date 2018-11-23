@@ -52,9 +52,14 @@ public class CategoriaController extends HttpServlet {
 				try {
 					if (acao.equals("adicionar")) {
 						Categoria c = new Categoria();
-						c.setTipo(request.getParameter("txtTipo"));
-						categoriaDAO.adicionaCategoria(c);
-						mensagem = "Categoria adicionada com sucesso";
+						String tipo = request.getParameter("txtTipo");
+						if(tipo != null && !tipo.trim().equals("")){
+							c.setTipo(tipo);
+							categoriaDAO.adicionaCategoria(c);
+							mensagem = "Categoria adicionada com sucesso";
+						} else {
+							mensagem = "Informe o nome da categoria para cadastrá-la.";
+						}
 					}
 					if (acao.equals("pesquisar")) {
 						List<Categoria> lista = categoriaDAO.pesquisaCategoria(request.getParameter("txtTipo"));
@@ -76,11 +81,16 @@ public class CategoriaController extends HttpServlet {
 					} else if ("salvar".equals(acao)) {
 						Categoria c = new Categoria();
 						c.setId(Integer.parseInt(request.getParameter("txtId")));
-						c.setTipo(request.getParameter("txtTipo"));
-						categoriaDAO.editarCategoria(c);	
-						List<Categoria> lista = categoriaDAO.pesquisaCategoria("");
-						session.setAttribute("LISTA", lista);
-						mensagem = "Categoria atualizada com sucesso";
+						String tipo = (String) request.getParameter("txtTipo");
+						if(tipo != null && !tipo.trim().equals("")){
+							c.setTipo(tipo);
+							categoriaDAO.editarCategoria(c);	
+							List<Categoria> lista = categoriaDAO.pesquisaCategoria("");
+							session.setAttribute("LISTA", lista);
+							mensagem = "Categoria atualizada com sucesso";
+						} else {
+							mensagem = "Informe o tipo da categoria.";
+						}
 					}
 				} catch (Throwable e) {
 					mensagem = "Não foi possível realizar a ação.";

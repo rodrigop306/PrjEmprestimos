@@ -30,20 +30,16 @@
 	
 	<form id="formUsuario" action="./UsuarioController" method="post">
 		<div class="container">
-			<div class="form-group">
-    			<label for="txtId">Id</label>
-    			<input type="text" class="form-control" id="txtId" name="txtId" readonly/>
-  			</div>
   			<div class="form-group">
-    			<label for="txtNome">Nome</label>
+    			<label for="txtNome">Nome: *</label>
     			<input type="text" class="form-control" id="txtNome" name="txtNome"/>
   			</div>   
 			<div class="form-group">
-    			<label for="txtLogin">Login</label>
+    			<label for="txtLogin">Login: *</label>
     			<input type="text" class="form-control" id="txtLogin" name="txtLogin"/>
   			</div>  	
   			<div class="form-group">
-    			<label for="txtSenha">Senha</label>
+    			<label for="txtSenha">Senha: *</label>
     			<input type="password" class="form-control" id="txtSenha" name="txtSenha"/>
   			</div>
 			<div class="form-group">
